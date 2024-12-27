@@ -1,0 +1,118 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-rendering: geometricPrecision;
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  background: #000;
+  overscroll-behavior: none;
+}
+
+*,
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+/* @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"); */
+
+h1,
+h2 {
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 7vw;
+  letter-spacing: 0em;
+  line-height: 6.8vw;
+}
+
+h2 {
+  font-size: 2vw;
+  letter-spacing: 0em;
+  line-height: 1.9vw;
+}
+
+p {
+  font-family: "Manrope", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+}
+
+.intro {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("https://c1.wallpaperflare.com/preview/367/830/523/pink-sky-sunset-clouds.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.title {
+  position: relative;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.panels {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  place-content: center;
+  place-items: center;
+  overflow: hidden;
+}
+
+.panel {
+  position: relative;
+  background-image: url("https://media.gq.com/photos/62e4010a11673c699e0548f5/16:9/w_2240,c_limit/FY1X5EeXkAAOXOO.jpeg");
+  background-size: 100vw auto;
+  background-repeat: no-repeat;
+  opacity: 0;
+}
+
+.bey-cutout {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+}
+
+.intersecting.highlight {
+  opacity: 1 !important;
+}
+
+.intersecting.pleaseFoff {
+  opacity: 0 !important;
+}
