@@ -1,6 +1,7 @@
 "use client";
 
 import React, { use } from "react";
+import "../globals.css";
 import "./style.css";
 import { useEffect } from "react";
 
@@ -65,12 +66,8 @@ const CozyPage: React.FC = () => {
         const svgElement = svgPath.ownerSVGElement as SVGSVGElement;
 
         // Function to convert screen coordinates to SVG coordinates
-        interface SVGCoordinates {
-          x: number;
-          y: number;
-        }
 
-        function convertToSVGCoordinates(x: number, y: number): SVGCoordinates {
+        function convertToSVGCoordinates(x: number, y: number) {
           const point = svgElement.createSVGPoint();
           point.x = x;
           point.y = y;
