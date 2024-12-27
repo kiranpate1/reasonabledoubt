@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-const CozyPage: React.FC = () => {
+const Cozy: React.FC = () => {
   useEffect(() => {
     const panelSize = 50;
     const panels = document.querySelector(".panels") as HTMLElement;
@@ -250,4 +250,4 @@ const CozyPage: React.FC = () => {
   );
 };
 
-export default CozyPage;
+export default Cozy;
