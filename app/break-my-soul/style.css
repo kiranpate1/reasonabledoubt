@@ -1,0 +1,152 @@
+:root {
+  --hex1: #cbcb1c;
+  --hex2: #e43124;
+  --angle: skewX(-20deg) scaleX(0.8);
+  --counter-angle: skewX(24.5deg) scaleX(1.25);
+}
+
+sup {
+  vertical-align: super;
+  font-weight: 700;
+  font-size: 10px;
+}
+
+.intro {
+  width: 100%;
+  height: 300vh;
+}
+
+.images {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.images > * {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  overflow: hidden;
+  transform: var(--angle);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  mix-blend-mode: color;
+  z-index: 1;
+}
+
+.images > *.active {
+  width: 100%;
+}
+
+#image-1 {
+  background: var(--hex1);
+}
+
+#image-2 {
+  background: var(--hex2);
+}
+
+.images > * > *:not(.overlay) {
+  transform: var(--counter-angle);
+}
+
+.info {
+  position: absolute;
+  top: 0;
+  left: 15vw;
+  padding-bottom: 1vw;
+  width: 35vw;
+  height: 100vh;
+  overflow: hidden;
+  transform-origin: center right;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  gap: 48px;
+  z-index: -1;
+  opacity: 0;
+  text-align: right;
+}
+
+#image-2 .info {
+  padding-bottom: 10vw;
+}
+
+.images img {
+  min-width: 50vw;
+  max-width: 50vw;
+  height: 100vh;
+  object-fit: cover;
+  transform-origin: center left;
+}
+
+.buttons {
+  position: absolute;
+  z-index: 99;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.no1 {
+  position: relative;
+  height: 400vh;
+}
+
+.bg {
+  position: absolute;
+  top: 0;
+  left: -211.5px;
+  width: 100%;
+  height: 100%;
+  background: var(--hex2);
+  transform: var(--angle);
+  transform-origin: top;
+}
+
+.dsdsf {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(238px) var(--counter-angle);
+}
+
+.dsdsfdfs {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  max-width: 40vw;
+  max-height: 40vh;
+  object-fit: cover;
+}
+
+.dsdsfdfs p {
+  position: absolute;
+  width: 100%;
+  top: -24px;
+  transform: translateY(-100%);
+  text-wrap: balance;
+}
+
+.dsdsfdfs img {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+}
