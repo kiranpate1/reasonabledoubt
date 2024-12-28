@@ -60,7 +60,7 @@ const AlienSuperstar: React.FC = () => {
     function animateCircle() {
       phase1();
       function phase1() {
-        var container = document.querySelector(".phase1") as HTMLElement;
+        var container = document.querySelector(".circle") as HTMLElement;
         var height = container.getBoundingClientRect().height;
         var offset = window.innerHeight * 0.4;
         var path = container.getBoundingClientRect().top - offset;
@@ -71,28 +71,8 @@ const AlienSuperstar: React.FC = () => {
         }
         if (path < 0 && path > -end) {
           var progress = path / -end;
-          var ease = easeInOut(progress);
-          p1(ease);
-        }
-        if (path <= -end) {
-          p1(1);
-        }
-      }
+          p1(progress);
 
-      phase2();
-      function phase2() {
-        var container = document.querySelector(".phase2") as HTMLElement;
-        var height = container.getBoundingClientRect().height;
-        var offset = window.innerHeight * 0.4;
-        var path = container.getBoundingClientRect().top - offset;
-        var end = height - offset;
-
-        if (path >= 0) {
-          p2(0);
-        }
-        if (path < 0 && path > -end) {
-          var progress = path / -end;
-          p2(progress);
           labels.forEach((label, i) => {
             const ratio = Math.max(
               0,
@@ -108,7 +88,7 @@ const AlienSuperstar: React.FC = () => {
           });
         }
         if (path <= -end) {
-          p2(1);
+          p1(1);
         }
       }
 
@@ -134,26 +114,29 @@ const AlienSuperstar: React.FC = () => {
     }
 
     function p1(progress: number) {
-      const amplitude = Math.sin(Math.PI * progress);
+      var progressInOut = easeInOut(progress);
+      var progressIn = easeInQuad(progress);
+      const amplitude = Math.sin(Math.PI * progressInOut);
 
-      const imageDistance = 0.1 * Math.sin(Math.PI * easeInOut(progress));
-      const filterDistance = 0.5 * amplitude;
+      const imageDistance = 0.1 * Math.sin(Math.PI * easeInOut(progressIn));
+      const filterDistance = 0.75 * Math.sin(Math.PI * progressInOut);
       images[0].style.filter = `contrast(${1.5 + filterDistance}) brightness(${
         1.5 + filterDistance
       })`;
       for (let i = 0; i < images.length; i++) {
         images[i].style.scale = `${1 + imageDistance}`;
         images[i].style.transform = `translate3d(0, 0, 0) translate(${
-          Math.sin(2 - progress * 2) * (-6 + progress * 6)
-        }%,${Math.cos(2 - progress * 2) * (6 - progress * 6)}%) rotateZ(${
-          5 * Math.cos((progress * Math.PI) / 2)
+          Math.sin(2 - progressIn * 2) * (-6 + progressIn * 6)
+        }%,${Math.cos(2 - progressIn * 2) * (6 - progressIn * 6)}%) rotateZ(${
+          7 * Math.cos((progressInOut * Math.PI) / 2)
         }deg)`;
       }
 
-      gradientBlur.style.width = `${progress * 100}%`;
+      gradientBlur.style.width =
+        progressIn < 3 / 5 ? `${progressIn * 100}%` : "50%";
 
-      const bgDistance = 10 * amplitude;
-      const bgDifference = progress * 100;
+      const bgDistance = 5 * amplitude;
+      const bgDifference = progressIn * 100;
       const background = `radial-gradient(circle, rgba(255, 0, 0, 0) ${
         (bgDifference * 2) / 3 - bgDistance
       }%, rgba(255, 0, 255, 0.5) ${
@@ -164,34 +147,35 @@ const AlienSuperstar: React.FC = () => {
 
       gradient.style.background = background;
 
-      gridSvg.style.transform = `translate(-50%,-50%) scale(${
+      gridSvg.style.transform = `translate3d(0, 0, 0) translate(-50%,-50%) scale(${
         1 + imageDistance * 2
       })`;
-      gridSvg.style.opacity = `${progress}`;
+      gridSvg.style.opacity = `${progressIn}`;
 
       for (let i = 0; i < gradientBlurs.length; i++) {
-        const distance = (100 / gradientBlurs.length) * amplitude;
+        const distance =
+          (100 / gradientBlurs.length) *
+          Math.sin(Math.PI * ((progressIn * 5) / 3));
         const difference = distance * (gradientBlurs.length - 1 - i);
         const start = 100 - difference - distance;
         const end = 100 - difference;
-        const mask = `radial-gradient(circle, rgba(0, 0, 0, 0) ${start}%, rgba(0, 0, 0, 1) ${end}%)`;
+        const mask =
+          progressIn < 3 / 5
+            ? `radial-gradient(circle, rgba(0, 0, 0, 0) ${start}%, rgba(0, 0, 0, 1) ${end}%)`
+            : `radial-gradient(circle, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 1) 100%)`;
 
         gradientBlurs[i].style.mask = mask;
         gradientBlurs[i].style.webkitMask = mask;
       }
-    }
 
-    function p2(progress: number) {
-      var ease = easeInOut(progress);
-
-      images[1].style.opacity = `${easeInOut(ease)}`;
+      images[1].style.opacity = `${-1 + easeInOut(progress * 2)}`;
       images[1].style.filter = `contrast(1.5) brightness(1.5) hue-rotate(${
         50 - 125 * progress
       }deg)`;
 
-      if (ease > 0.01) {
-        gridPath.style.strokeDasharray = `${2000 - ease * 1000}`;
-        gridPath.style.strokeDashoffset = `${-1000 + ease * 1000}`;
+      if (progressIn > 0.01) {
+        gridPath.style.strokeDasharray = `${3000 - progressInOut * 2000}`;
+        gridPath.style.strokeDashoffset = `${-2000 + progressInOut * 2000}`;
       }
 
       // for (let i = 0; i < textboxes.length; i++) {
@@ -213,6 +197,10 @@ const AlienSuperstar: React.FC = () => {
       if (t < 1) return 0.5 * Math.pow(t, 5);
       t -= 2;
       return 0.5 * (Math.pow(t, 5) + 2);
+    }
+
+    function easeInQuad(t: number) {
+      return t * t;
     }
 
     // LISTENERS

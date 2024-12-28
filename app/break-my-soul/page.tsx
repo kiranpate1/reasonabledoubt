@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-const AlienSuperstar: React.FC = () => {
+const BreakMySoul: React.FC = () => {
   useEffect(() => {
     //setup
     function setup() {
@@ -266,4 +266,4 @@ const AlienSuperstar: React.FC = () => {
   );
 };
 
-export default AlienSuperstar;
+export default BreakMySoul;

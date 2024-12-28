@@ -109,7 +109,7 @@ sup {
 .bg {
   position: absolute;
   top: 0;
-  left: -211.5px;
+  left: -167px;
   width: 100%;
   height: 100%;
   background: var(--hex2);
@@ -126,7 +126,7 @@ sup {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateX(238px) var(--counter-angle);
+  transform: translateX(188px) var(--counter-angle);
 }
 
 .dsdsfdfs {
