@@ -8,8 +8,14 @@ export default function Home() {
   const maxWidth = 17;
 
   useEffect(() => {
+    let isHovering = false;
+    const images = document.querySelectorAll("#scrollImages > div");
+    let totalWidth = window.innerWidth;
+    const totalImages = images.length;
+
     //animate
     function handleImageResize() {
+      totalWidth = window.innerWidth;
       handleImageScroll();
     }
 
@@ -20,7 +26,7 @@ export default function Home() {
       if (!handleImageScroll.throttled) {
         handleImageScroll.throttled = true;
         requestAnimationFrame(() => {
-          imagesScroll();
+          handleScroll();
           handleImageScroll.throttled = false;
         });
       }
@@ -28,17 +34,19 @@ export default function Home() {
 
     handleImageScroll.throttled = false;
 
-    function imagesScroll() {
-      const images = document.querySelectorAll("#scrollImages > div");
-      const totalWidth = window.innerWidth;
-      const totalImages = images.length;
-      let remainingWidth = totalWidth;
+    function handleScroll() {
+      if (isHovering) return;
 
-      // Example usage
       const scrollPercentage =
         window.scrollY /
         (document.documentElement.scrollHeight - window.innerHeight);
-      const widths = generateNumbers(scrollPercentage);
+
+      animateImages(scrollPercentage);
+    }
+
+    function animateImages(input: number) {
+      let remainingWidth = totalWidth;
+      const widths = generateNumbers(input);
 
       for (let i = 0; i < totalImages; i++) {
         const image = images[i] as HTMLElement;
@@ -55,15 +63,32 @@ export default function Home() {
         // image.style.transform = `translate3d(0,0,0) skew(${skewFactor}deg,${-skewFactor}deg)`;
         // imageImg.style.transform = `skewY(${-skewFactor}deg,${skewFactor}deg)`;
         const rotateFactor =
-          i > scrollPercentage * numberOfImages
+          i > input * numberOfImages
             ? (maxWidth - width) * 1
             : (-maxWidth + width) * 1;
-        image.style.transform = `translate3d(0,0,0) rotate(${rotateFactor}deg)`;
+        //image.style.transform = `translate3d(0,0,0) rotate(${rotateFactor}deg)`;
         // imageImg.style.transform = `rotate(${-rotateFactor}deg)`;
 
         remainingWidth -= width;
       }
     }
+
+    const scrollImages = document.getElementById("scrollImages") as HTMLElement;
+
+    scrollImages.addEventListener("mouseenter", () => {
+      isHovering = true;
+    });
+    scrollImages.addEventListener("mousemove", (event) => {
+      if (!isHovering) return;
+      const cursorPercentage = event.clientX / window.innerWidth;
+
+      animateImages(easeInOut(cursorPercentage));
+    });
+    scrollImages.addEventListener("mouseleave", () => {
+      isHovering = false;
+
+      handleScroll();
+    });
 
     function generateNumbers(percentage: number, maxWeight = maxWidth) {
       const totalSum = 100; // The target total sum
@@ -102,7 +127,7 @@ export default function Home() {
     }
 
     //easing
-    function easeTiles(t: number) {
+    function easeInOut(t: number) {
       t /= 0.5;
       if (t < 1) return 0.5 * Math.pow(t, 5);
       t -= 2;
@@ -114,7 +139,7 @@ export default function Home() {
     }
 
     //listeners
-    imagesScroll();
+    handleScroll();
     window.addEventListener("scroll", handleImageScroll);
     window.addEventListener("resize", handleImageResize, {
       passive: true,
@@ -135,7 +160,7 @@ export default function Home() {
             key={i}
             className="h-[200px] relative overflow-hidden"
             style={{
-              transition: "width 0.1s, transform 0.1s",
+              transition: "0.1s",
               transform: "translate3d(0,0,0)",
             }}
           >
@@ -146,7 +171,7 @@ export default function Home() {
               height={300}
               alt="random"
               style={{
-                transition: "transform 0.1s",
+                transition: "0.1s",
                 transform: "translate3d(0,0,0)",
               }}
             />
