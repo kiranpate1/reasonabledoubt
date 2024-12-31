@@ -3,15 +3,35 @@
 import Image from "next/image";
 import { useEffect } from "react";
 
-export default function Home() {
+const trackList = [
+  { name: "I'M THAT GIRL", src: "/images/home/1.png" },
+  { name: "COZY", src: "/images/home/2.png" },
+  { name: "ALIEN SUPERSTAR", src: "/images/home/3.png" },
+  { name: "CUFF IT", src: "/images/home/4.png" },
+  { name: "ENERGY", src: "/images/home/5.png" },
+  { name: "BREAK MY SOUL", src: "/images/home/6.png" },
+  { name: "CHURCH GIRL", src: "/images/home/7.png" },
+  { name: "PLASTIC OFF THE SOFA", src: "/images/home/8.png" },
+  { name: "VIRGO'S GROOVE", src: "/images/home/9.png" },
+  { name: "MOVE", src: "/images/home/10.png" },
+  { name: "HEATED", src: "/images/home/11.png" },
+  { name: "THIQUE", src: "/images/home/12.png" },
+  { name: "ALL UP IN YOUR MIND", src: "/images/home/13.png" },
+  { name: "AMERICA HAS A PROBLEM", src: "/images/home/14.png" },
+  { name: "PURE/HONEY", src: "/images/home/15.png" },
+  { name: "SUMMER RENAISSANCE", src: "/images/home/16.png" },
+];
+
+export default function Home(props: typeof trackList) {
+  const numberofTracks = trackList.length;
   const numberOfImages = 20;
   const maxWidth = 17;
 
   useEffect(() => {
-    let isHovering = false;
     const images = document.querySelectorAll("#scrollImages > div");
-    let totalWidth = window.innerWidth;
     const totalImages = images.length;
+    let totalWidth = window.innerWidth;
+    let isHovering = false;
 
     //animate
     function handleImageResize() {
@@ -37,9 +57,10 @@ export default function Home() {
     function handleScroll() {
       if (isHovering) return;
 
+      const scrollTrack = document.getElementById("scrollTrack") as HTMLElement;
       const scrollPercentage =
-        window.scrollY /
-        (document.documentElement.scrollHeight - window.innerHeight);
+        (window.scrollY - scrollTrack.offsetTop) /
+        (scrollTrack.scrollHeight - window.innerHeight);
 
       animateImages(scrollPercentage);
     }
@@ -62,10 +83,10 @@ export default function Home() {
         //     : (-maxWidth + width) * 1;
         // image.style.transform = `translate3d(0,0,0) skew(${skewFactor}deg,${-skewFactor}deg)`;
         // imageImg.style.transform = `skewY(${-skewFactor}deg,${skewFactor}deg)`;
-        const rotateFactor =
-          i > input * numberOfImages
-            ? (maxWidth - width) * 1
-            : (-maxWidth + width) * 1;
+        // const rotateFactor =
+        //   i > input * numberOfImages
+        //     ? (maxWidth - width) * 1
+        //     : (-maxWidth + width) * 1;
         //image.style.transform = `translate3d(0,0,0) rotate(${rotateFactor}deg)`;
         // imageImg.style.transform = `rotate(${-rotateFactor}deg)`;
 
@@ -77,6 +98,17 @@ export default function Home() {
 
     scrollImages.addEventListener("mouseenter", () => {
       isHovering = true;
+      for (let i = 0; i < totalImages; i++) {
+        const image = images[i] as HTMLElement;
+        image.style.transition = "0.3s ease";
+        image.addEventListener(
+          "transitionend",
+          () => {
+            image.style.transition = "0s";
+          },
+          { once: true }
+        );
+      }
     });
     scrollImages.addEventListener("mousemove", (event) => {
       if (!isHovering) return;
@@ -88,11 +120,22 @@ export default function Home() {
       isHovering = false;
 
       handleScroll();
+      for (let i = 0; i < totalImages; i++) {
+        const image = images[i] as HTMLElement;
+        image.style.transition = "0.3s ease";
+        image.addEventListener(
+          "transitionend",
+          () => {
+            image.style.transition = "0s";
+          },
+          { once: true }
+        );
+      }
     });
 
     function generateNumbers(percentage: number, maxWeight = maxWidth) {
       const totalSum = 100; // The target total sum
-      const numberOfElements = 20; // Total elements in the array
+      const numberOfElements = numberOfImages; // Total elements in the array
       const midPoint = percentage * (numberOfElements - 1); // The "center" based on the percentage
 
       // Calculate preliminary weights based on proximity to the midpoint
@@ -147,37 +190,56 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start text-[#fff] h-[400vh]">
-      <a href="/cozy">1</a>
-      <a href="/alien-superstar">2</a>
-      <a href="/break-my-soul">3</a>
-      <div
-        id="scrollImages"
-        className="fixed bottom-0 left-0 w-screen flex flex-row gap-[0px] overflow-hidden"
-      >
-        {Array.from({ length: numberOfImages }, (_, i) => (
+    <main className="w-screen flex flex-col gap-8 row-start-2 items-center sm:items-start text-[#fff]">
+      <section className="relative w-full h-screen"></section>
+      <section id="scrollTrack" className="relative w-full h-[400vh]">
+        <div
+          id=""
+          className="absolute top-0 left-0 w-full grid"
+          style={{
+            height: "calc(100% - 100vh + 200px)",
+            gridTemplateRows: `repeat(${trackList.length}, 1fr)`,
+          }}
+        >
+          {trackList.map((track, index) => (
+            <a
+              key={index}
+              href={`/${track.name.toLowerCase().replace(/ /g, "-")}`}
+            >
+              {index + 1}.{track.name}
+            </a>
+          ))}
+        </div>
+        <div className="sticky w-screen h-screen top-0 left-0">
           <div
-            key={i}
-            className="h-[200px] relative overflow-hidden"
-            style={{
-              transition: "0.1s",
-              transform: "translate3d(0,0,0)",
-            }}
+            id="scrollImages"
+            className="absolute w-screen bottom-0 left-0 flex flex-row gap-[0px] overflow-hidden"
           >
-            <Image
-              className="w-full object-cover h-full"
-              src={`/images/home/${i + 1}.png`}
-              width={200}
-              height={300}
-              alt="random"
-              style={{
-                transition: "0.1s",
-                transform: "translate3d(0,0,0)",
-              }}
-            />
+            {Array.from({ length: numberOfImages }, (_, i) => (
+              <div
+                key={i}
+                className="h-[200px] relative overflow-hidden"
+                style={{
+                  // transition: "0.1s",
+                  transform: "translate3d(0,0,0)",
+                }}
+              >
+                <Image
+                  className="w-full object-cover h-full"
+                  src={`/images/home/${i + 1}.png`}
+                  width={200}
+                  height={300}
+                  alt="random"
+                  style={{
+                    // transition: "0.1s",
+                    transform: "translate3d(0,0,0)",
+                  }}
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      </section>
     </main>
   );
 }

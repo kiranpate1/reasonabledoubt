@@ -23,7 +23,8 @@ p {
 
 h1,
 h2,
-.detail {
+.detail,
+a {
   font-family: "Roboto Mono", serif;
   font-optical-sizing: auto;
   font-weight: 400;
