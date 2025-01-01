@@ -36,6 +36,7 @@ const trackList = [
 
 export default function Home(props: typeof trackList) {
   const maxWidth = 17;
+  const scrollHeight = 400;
 
   useEffect(() => {
     const scrollImages = document.getElementById("scrollImages") as HTMLElement;
@@ -45,6 +46,13 @@ export default function Home(props: typeof trackList) {
     const lines = document.querySelectorAll(
       "#scrollLines > div"
     ) as NodeListOf<HTMLElement>;
+    const test = document.getElementById("test") as HTMLElement;
+    const loadingBars = document.querySelectorAll(
+      "#loadingBar > div"
+    ) as NodeListOf<HTMLElement>;
+    const loadingMessage = document.getElementById(
+      "loadingMessage"
+    ) as HTMLElement;
     let totalWidth = window.innerWidth;
     let isHovering = false;
 
@@ -79,8 +87,6 @@ export default function Home(props: typeof trackList) {
           window.scrollY / scrollTrack.offsetTop,
           1
         );
-        scrollImages.style.transform = `scaleY(${easeInQuad(scrollProgress)})`;
-        animateImages(-3 + 3 * scrollProgress);
         for (let i = 0; i < trackList.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = images[i].querySelector("img") as HTMLElement;
@@ -94,13 +100,26 @@ export default function Home(props: typeof trackList) {
             3 - 2 * easeInQuad(scrollProgress)
           })`;
         }
+        animateImages(-3 + 3 * scrollProgress);
+        scrollImages.style.transform = `scaleY(${easeInQuad(scrollProgress)})`;
+        test.style.transform = `translateY(${
+          0 - 200 * easeInQuad(scrollProgress)
+        }px)`;
+
+        loadingBars.forEach((loadingBar, index) => {
+          loadingBar.style.opacity =
+            index < Math.round(loadingBars.length * scrollProgress) ? "1" : "0";
+        });
+        loadingMessage.innerHTML = "Trying to retrieve tracklist...";
       }
       if (
         window.scrollY > scrollTrack.offsetTop &&
         window.scrollY <
           scrollTrack.offsetTop + scrollTrack.scrollHeight - window.innerHeight
       ) {
-        scrollImages.style.transform = `scaleY(1)`;
+        const scrollPercentage =
+          (window.scrollY - scrollTrack.offsetTop) /
+          (scrollTrack.scrollHeight - window.innerHeight);
         for (let i = 0; i < trackList.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = images[i].querySelector("img") as HTMLElement;
@@ -112,10 +131,13 @@ export default function Home(props: typeof trackList) {
           image.style.transform = `translate3d(0,0,0) skewX(0deg)`;
           imageImg.style.transform = `translate3d(0,0,0) skewX(0deg)`;
         }
-        const scrollPercentage =
-          (window.scrollY - scrollTrack.offsetTop) /
-          (scrollTrack.scrollHeight - window.innerHeight);
-        animateImages(scrollPercentage);
+        animateImages(easeImageScroll(scrollPercentage));
+        scrollImages.style.transform = `scaleY(1)`;
+        scrollImages.style.filter = `brightness(1)`;
+        // scrollImages.style.opacity = "1";
+        test.style.transform = `translateY(-200px)`;
+
+        loadingMessage.innerHTML = "Success.";
       }
       if (
         window.scrollY >
@@ -130,22 +152,25 @@ export default function Home(props: typeof trackList) {
               (scrollTrack.offsetTop +
                 scrollTrack.scrollHeight -
                 window.innerHeight) -
-              window.innerHeight -
-              100),
+              window.innerHeight * 1.25),
           1
         );
-        animateImages(1 + scrollProgress);
+
         for (let i = 0; i < trackList.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = image.querySelector("img") as HTMLElement;
+          image.style.transformOrigin = "bottom";
           image.style.transform = `translate3d(0,0,0) skewX(${
-            scrollProgress * 90
+            scrollProgress * 89.5
           }deg)`;
+          imageImg.style.transformOrigin = "bottom";
           imageImg.style.transform = `translate3d(0,0,0) skewX(${
-            -scrollProgress * 90
+            -scrollProgress * 89.5
           }deg)`;
         }
-        //animateImages(10);
+        animateImages(1 + scrollProgress);
+        scrollImages.style.filter = `brightness(${1 + scrollProgress * 3})`;
+        // scrollImages.style.opacity = `${1 - scrollProgress}`;
       }
     }
 
@@ -253,11 +278,13 @@ export default function Home(props: typeof trackList) {
     }
 
     //easing
-    function easeInOut(t: number) {
-      t /= 0.5;
-      if (t < 1) return 0.5 * Math.pow(t, 5);
-      t -= 2;
-      return 0.5 * (Math.pow(t, 5) + 2);
+    function easeImageScroll(t: number) {
+      const p0 = 0.25,
+        p1 = 0,
+        p2 = 0.75,
+        p3 = 1;
+      const u = 1 - t;
+      return 3 * u * u * t * p0 + 3 * u * t * t * p2 + t * t * t * p3;
     }
 
     function easeInQuad(t: number) {
@@ -277,9 +304,46 @@ export default function Home(props: typeof trackList) {
       <section className="relative w-full h-screen">
         <h1>Renaissance</h1>
       </section>
-      <section id="scrollTrack" className="relative w-screen h-[400vh]">
+      <section
+        id="scrollTrack"
+        className="relative w-screen"
+        style={{ height: `${scrollHeight}vh` }}
+      >
         <div className="relative z-10 pointer-events-none flex h-0 w-screen items-start">
-          <div className="relative w-screen h-[500vh] top-[-100vh]">
+          <div className="relative w-screen h-[200vh] top-[-100vh]">
+            <div className="sticky top-0 w-screen min-h-screen flex items-start">
+              <div
+                className="absolute w-screen bottom-0 left-0 detail text-[12px] flex gap-20"
+                id="test"
+              >
+                <div>Error 404</div>
+                <div className="flex flex-row gap-2 items-center">
+                  <div
+                    id="loadingBar"
+                    className="flex flex-row h-2 gap-[1px] py-0.5 px-[1.5px] border-white border-solid border-[0.5px]"
+                  >
+                    <div className="w-1 h-full bg-white"></div>
+                    <div className="w-1 h-full bg-white"></div>
+                    <div className="w-1 h-full bg-white"></div>
+                    <div className="w-1 h-full bg-white"></div>
+                    <div className="w-1 h-full bg-white"></div>
+                    <div className="w-1 h-full bg-white"></div>
+                    <div className="w-1 h-full bg-white"></div>
+                    <div className="w-1 h-full bg-white"></div>
+                    <div className="w-1 h-full bg-white"></div>
+                    <div className="w-1 h-full bg-white"></div>
+                  </div>
+                  <div id="loadingMessage">Trying to retrieve tracklist...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="relative z-10 pointer-events-none flex h-0 w-screen items-start">
+          <div
+            className="relative w-screen top-[-100vh]"
+            style={{ height: `${scrollHeight + 100}vh` }}
+          >
             <div className="sticky top-0 w-screen min-h-screen flex items-start">
               <div
                 id="scrollImages"
@@ -315,8 +379,8 @@ export default function Home(props: typeof trackList) {
           id="scrollLines"
           className="absolute w-screen h-full bottom-[200px] left-0 flex flex-row gap-[0px]"
           style={{
-            height: "calc(100% - 100vh)",
-            borderTop: "1px solid rgba(255,255,255,0.1)",
+            height: `${scrollHeight - 100}vh`,
+            borderTop: "1px solid rgba(255,255,255,0.2)",
           }}
         >
           {trackList.map((track, index) => (
@@ -324,13 +388,13 @@ export default function Home(props: typeof trackList) {
               key={index}
               className="relative h-full grid"
               style={{
-                borderLeft: "0.5px solid rgba(255,255,255,0.1)",
-                borderRight: "0.5px solid rgba(255,255,255,0.1)",
+                borderLeft: "0.5px solid rgba(255,255,255,0.2)",
+                borderRight: "0.5px solid rgba(255,255,255,0.2)",
                 gridTemplateRows: `repeat(${trackList.length}, 1fr)`,
               }}
             >
               <a
-                className="overflow-hidden whitespace-nowrap"
+                className="overflow-hidden whitespace-nowrap self-center"
                 key={index}
                 href={`/${track.name.toLowerCase().replace(/ /g, "-")}`}
                 style={{ gridArea: `${index + 1} / 1 / span 1 / span 1` }}
@@ -342,6 +406,7 @@ export default function Home(props: typeof trackList) {
             </div>
           ))}
         </div>
+        <div className="absolute bottom-0 left-0 h-[1px] w-screen bg-[#fff]"></div>
       </section>
       <section className="relative w-full h-screen">
         <h1>Renaissance</h1>
