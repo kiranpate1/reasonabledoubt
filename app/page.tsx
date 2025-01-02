@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect } from "react";
+import Cd from "../components/Cd/Cd";
 
 const trackList = [
   { name: "I'M THAT GIRL", src: "/images/home/1.png", color: "#fff" },
@@ -9,8 +10,8 @@ const trackList = [
   { name: "ALIEN SUPERSTAR", src: "/images/home/8.png", color: "#67C8FB" },
   { name: "CUFF IT", src: "/images/home/10.png", color: "#713735" },
   { name: "ENERGY", src: "/images/home/4.png", color: "#000" },
-  { name: "BREAK MY SOUL", src: "/images/home/17.png", color: "#E80000" },
-  { name: "CHURCH GIRL", src: "/images/home/7.png", color: "#F05F04" },
+  { name: "BREAK MY SOUL", src: "/images/home/18.png", color: "#E80000" },
+  { name: "CHURCH GIRL", src: "/images/home/17.png", color: "#F05F04" },
   {
     name: "PLASTIC OFF THE SOFA",
     src: "/images/home/12.png",
@@ -29,7 +30,7 @@ const trackList = [
   { name: "PURE/HONEY", src: "/images/home/20.png", color: "#67C8FB" },
   { name: "SUMMER RENAISSANCE", src: "/images/home/5.png", color: "#713735" },
   { name: "SUNSHINE", src: "/images/home/6.png", color: "#000" },
-  { name: "BROKEN", src: "/images/home/18.png", color: "#E80000" },
+  { name: "BROKEN", src: "/images/home/7.png", color: "#E80000" },
   { name: "FREAKY", src: "/images/home/19.png", color: "#F05F04" },
   { name: "SWEET", src: "/images/home/15.png", color: "#F9D608" },
 ];
@@ -46,7 +47,8 @@ export default function Home(props: typeof trackList) {
     const lines = document.querySelectorAll(
       "#scrollLines > div"
     ) as NodeListOf<HTMLElement>;
-    const test = document.getElementById("test") as HTMLElement;
+    const status1 = document.getElementById("status-1") as HTMLElement;
+    const status2 = document.getElementById("status-2") as HTMLElement;
     const loadingBars = document.querySelectorAll(
       "#loadingBar > div"
     ) as NodeListOf<HTMLElement>;
@@ -82,6 +84,7 @@ export default function Home(props: typeof trackList) {
 
       const scrollTrack = document.getElementById("scrollTrack") as HTMLElement;
 
+      //section-1
       if (window.scrollY < scrollTrack.offsetTop) {
         const scrollProgress = Math.min(
           window.scrollY / scrollTrack.offsetTop,
@@ -90,28 +93,34 @@ export default function Home(props: typeof trackList) {
         for (let i = 0; i < trackList.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = images[i].querySelector("img") as HTMLElement;
-          image.style.transitionDelay = `${(trackList.length - i + 1) * 0.01}s`;
+          image.style.transitionDelay = `${
+            (trackList.length - i + 1) * 0.0125
+          }s`;
           image.style.backgroundColor = trackList[i].color;
           imageImg.style.transitionDelay = `${
-            (trackList.length - i + 1) * 0.01
+            (trackList.length - i + 1) * 0.0125
           }s`;
           imageImg.style.opacity = "0";
           imageImg.style.transform = `translate3d(0,0,0) scaleY(${
             3 - 2 * easeInQuad(scrollProgress)
           })`;
         }
-        animateImages(-3 + 3 * scrollProgress);
+        animateImages(-3 + 3 * easeOutQuad(scrollProgress));
         scrollImages.style.transform = `scaleY(${easeInQuad(scrollProgress)})`;
-        test.style.transform = `translateY(${
+
+        status1.style.transform = `translateY(${
           0 - 200 * easeInQuad(scrollProgress)
         }px)`;
+        status1.style.opacity = "1";
+        status2.style.opacity = "0";
 
         loadingBars.forEach((loadingBar, index) => {
           loadingBar.style.opacity =
             index < Math.round(loadingBars.length * scrollProgress) ? "1" : "0";
         });
-        loadingMessage.innerHTML = "Trying to retrieve tracklist...";
       }
+
+      //section-2
       if (
         window.scrollY > scrollTrack.offsetTop &&
         window.scrollY <
@@ -123,9 +132,9 @@ export default function Home(props: typeof trackList) {
         for (let i = 0; i < trackList.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = images[i].querySelector("img") as HTMLElement;
-          image.style.transitionDelay = `${i * 0.01}s`;
+          image.style.transitionDelay = `${i * 0.0125}s`;
           image.style.backgroundColor = "#000";
-          imageImg.style.transitionDelay = `${i * 0.01}s`;
+          imageImg.style.transitionDelay = `${i * 0.0125}s`;
           imageImg.style.opacity = "1";
           imageImg.style.transform = `translate3d(0,0,0) scaleY(1)`;
           image.style.transform = `translate3d(0,0,0) skewX(0deg)`;
@@ -135,10 +144,13 @@ export default function Home(props: typeof trackList) {
         scrollImages.style.transform = `scaleY(1)`;
         scrollImages.style.filter = `brightness(1)`;
         // scrollImages.style.opacity = "1";
-        test.style.transform = `translateY(-200px)`;
 
-        loadingMessage.innerHTML = "Success.";
+        status1.style.transform = `translateY(-200px)`;
+        status1.style.opacity = "0";
+        status2.style.opacity = "1";
       }
+
+      //section-3
       if (
         window.scrollY >
         scrollTrack.offsetTop + scrollTrack.scrollHeight - window.innerHeight
@@ -159,11 +171,9 @@ export default function Home(props: typeof trackList) {
         for (let i = 0; i < trackList.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = image.querySelector("img") as HTMLElement;
-          image.style.transformOrigin = "bottom";
           image.style.transform = `translate3d(0,0,0) skewX(${
             scrollProgress * 89.5
           }deg)`;
-          imageImg.style.transformOrigin = "bottom";
           imageImg.style.transform = `translate3d(0,0,0) skewX(${
             -scrollProgress * 89.5
           }deg)`;
@@ -220,7 +230,7 @@ export default function Home(props: typeof trackList) {
     //   if (!isHovering) return;
     //   const cursorPercentage = event.clientX / window.innerWidth;
 
-    //   animateImages(easeInOut(cursorPercentage));
+    //   animateImages(easeImageScroll(cursorPercentage));
     // });
     // scrollImages.addEventListener("mouseleave", () => {
     //   isHovering = false;
@@ -286,9 +296,19 @@ export default function Home(props: typeof trackList) {
       const u = 1 - t;
       return 3 * u * u * t * p0 + 3 * u * t * t * p2 + t * t * t * p3;
     }
+    function easeGeneric(t: number) {
+      t /= 0.5;
+      if (t < 1) return 0.5 * Math.pow(t, 5);
+      t -= 2;
+      return 0.5 * (Math.pow(t, 5) + 2);
+    }
 
     function easeInQuad(t: number) {
       return t * t;
+    }
+
+    function easeOutQuad(t: number) {
+      return t * (2 - t);
     }
 
     //listeners
@@ -302,6 +322,18 @@ export default function Home(props: typeof trackList) {
   return (
     <main className="w-screen flex flex-col row-start-2 items-center sm:items-start text-[#fff]">
       <section className="relative w-full h-screen">
+        {/* <div
+          className="absolute top-0 left-0 w-screen"
+          style={{ height: "calc(200vh - 200px)" }}
+        >
+          <img
+            className="w-full h-full object-cover"
+            src="/images/image_57.webp"
+            width={200}
+            height={300}
+            alt=""
+          />
+        </div> */}
         <h1>Renaissance</h1>
       </section>
       <section
@@ -309,12 +341,12 @@ export default function Home(props: typeof trackList) {
         className="relative w-screen"
         style={{ height: `${scrollHeight}vh` }}
       >
-        <div className="relative z-10 pointer-events-none flex h-0 w-screen items-start">
+        <div className="relative pointer-events-none flex h-0 w-screen items-start z-11">
           <div className="relative w-screen h-[200vh] top-[-100vh]">
             <div className="sticky top-0 w-screen min-h-screen flex items-start">
               <div
-                className="absolute w-screen bottom-0 left-0 detail text-[12px] flex gap-20"
-                id="test"
+                className="absolute w-screen bottom-0 left-0 detail text-[12px] flex gap-20 pointer-events-auto"
+                id="status-1"
               >
                 <div>Error 404</div>
                 <div className="flex flex-row gap-2 items-center">
@@ -333,9 +365,44 @@ export default function Home(props: typeof trackList) {
                     <div className="w-1 h-full bg-white"></div>
                     <div className="w-1 h-full bg-white"></div>
                   </div>
-                  <div id="loadingMessage">Trying to retrieve tracklist...</div>
+                  <div id="loadingMessage">Retrieving songs...</div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="absolute pointer-events-none w-screen left-0 z-10"
+          style={{
+            top: "calc(100vh - 200px - 18px)",
+            height: `calc(${scrollHeight - 100}vh + 18px)`,
+          }}
+        >
+          <div
+            className="sticky w-screen top-0 left-0 detail text-[12px] flex gap-20 bg-black pointer-events-auto"
+            style={{
+              borderBottom: "1px solid rgba(255,255,255,0.15)",
+            }}
+            id="status-2"
+          >
+            <div>Success!!</div>
+            <div className="flex flex-row gap-2 items-center">
+              <div
+                id=""
+                className="flex flex-row h-2 gap-[1px] py-0.5 px-[1.5px] border-white border-solid border-[0.5px]"
+              >
+                <div className="w-1 h-full bg-white"></div>
+                <div className="w-1 h-full bg-white"></div>
+                <div className="w-1 h-full bg-white"></div>
+                <div className="w-1 h-full bg-white"></div>
+                <div className="w-1 h-full bg-white"></div>
+                <div className="w-1 h-full bg-white"></div>
+                <div className="w-1 h-full bg-white"></div>
+                <div className="w-1 h-full bg-white"></div>
+                <div className="w-1 h-full bg-white"></div>
+                <div className="w-1 h-full bg-white"></div>
+              </div>
+              <div id="loadingMessage">Found 16 songs.</div>
             </div>
           </div>
         </div>
@@ -347,19 +414,19 @@ export default function Home(props: typeof trackList) {
             <div className="sticky top-0 w-screen min-h-screen flex items-start">
               <div
                 id="scrollImages"
-                className="absolute w-screen bottom-0 left-0 flex flex-row gap-[0px] pointer-events-auto origin-bottom"
+                className="absolute w-screen bottom-0 left-0 flex flex-row gap-[0px] pointer-events-auto origin-bottom overflow-hidden"
               >
                 {trackList.map((track, i) => (
                   <div
                     key={i}
-                    className="h-[200px] relative overflow-hidden cursor-pointer"
+                    className="h-[200px] relative overflow-hidden origin-top"
                     style={{
                       transform: "translate3d(0,0,0)",
                       transition: "background-color 0.6s ease",
                     }}
                   >
                     <Image
-                      className="w-full object-cover h-full"
+                      className="w-full object-cover h-full origin-top"
                       src={track.src}
                       width={200}
                       height={300}
@@ -380,7 +447,6 @@ export default function Home(props: typeof trackList) {
           className="absolute w-screen h-full bottom-[200px] left-0 flex flex-row gap-[0px]"
           style={{
             height: `${scrollHeight - 100}vh`,
-            borderTop: "1px solid rgba(255,255,255,0.2)",
           }}
         >
           {trackList.map((track, index) => (
@@ -388,28 +454,29 @@ export default function Home(props: typeof trackList) {
               key={index}
               className="relative h-full grid"
               style={{
-                borderLeft: "0.5px solid rgba(255,255,255,0.2)",
-                borderRight: "0.5px solid rgba(255,255,255,0.2)",
+                borderLeft: "0.5px solid rgba(255,255,255,0.15)",
+                borderRight: "0.5px solid rgba(255,255,255,0.15)",
                 gridTemplateRows: `repeat(${trackList.length}, 1fr)`,
               }}
             >
               <a
-                className="overflow-hidden whitespace-nowrap self-center"
+                className="whitespace-nowrap self-center"
                 key={index}
                 href={`/${track.name.toLowerCase().replace(/ /g, "-")}`}
                 style={{ gridArea: `${index + 1} / 1 / span 1 / span 1` }}
               >
-                {index + 1}.
-                <br />
-                {track.name}
+                {index + 1}.{track.name}
               </a>
             </div>
           ))}
         </div>
-        <div className="absolute bottom-0 left-0 h-[1px] w-screen bg-[#fff]"></div>
+        <div className="absolute bottom-0 left-0 h-[1px] w-screen bg-[rgba(255,255,255,0.15)]"></div>
       </section>
       <section className="relative w-full h-screen">
         <h1>Renaissance</h1>
+        <div className="absolute top-0 left-0 w-full h-full">
+          <Cd size={500} />
+        </div>
       </section>
     </main>
   );
