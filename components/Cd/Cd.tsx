@@ -61,16 +61,27 @@ const Cd = ({ size }: props) => {
       ((latest - windowSize.width / 2) / (windowSize.width / 2)) * 40
   );
 
+  const rotateZ = useTransform(
+    motionValue(
+      Math.atan2(
+        cursorPosition.y - windowSize.height / 2,
+        cursorPosition.x - windowSize.width / 2
+      ) *
+        (180 / Math.PI)
+    ),
+    (latest: number) => latest
+  );
+
   const translateX = useTransform(
-    motionValue(cursorPosition.y),
+    motionValue(cursorPosition.x),
     (latest: number) =>
-      (-(latest - windowSize.height / 2) / (windowSize.height / 2)) * 2
+      ((latest - windowSize.width / 2) / (windowSize.width / 2)) * 2
   );
 
   const translateY = useTransform(
-    motionValue(cursorPosition.x),
+    motionValue(cursorPosition.y),
     (latest: number) =>
-      (-(latest - windowSize.width / 2) / (windowSize.width / 2)) * 2
+      ((latest - windowSize.height / 2) / (windowSize.height / 2)) * 2
   );
 
   const opacity1 = useTransform(
@@ -122,23 +133,23 @@ const Cd = ({ size }: props) => {
           }}
         >
           <div className="absolute w-[97.5%] h-[97.5%] flex justify-center items-center z-[2] mix-blend-hard-light">
-            <img
+            <motion.img
               className="absolute w-full h-full z-[4] mix-blend-plus-lighter opacity-70"
               src="/images/cd/sat3.png"
               alt="sat2"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", rotateZ: rotateZ }}
             />
-            <img
-              className="absolute w-full h-full z-[3] mix-blend-soft-light"
+            <motion.img
+              className="absolute w-full h-full z-[3] mix-blend-hard-light"
               src="/images/cd/sat.png"
               alt="sat"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", rotateZ: rotateZ }}
             />
-            <img
+            <motion.img
               className="absolute w-full h-full z-[2] opacity-100"
               src="/images/cd/mask.png"
               alt="mask"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", rotateZ: rotateZ }}
             />
             <motion.img
               className="absolute w-[99.5%] h-[99.5%] z-[1]"
@@ -154,11 +165,11 @@ const Cd = ({ size }: props) => {
             />
           </div>
           <div className="absolute w-full h-full z-[1]">
-            <img
+            <motion.img
               className="absolute w-full h-full z-[1]"
               src="/images/cd/cd1.png"
               alt="cd"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", rotateZ: rotateZ }}
             />
             <motion.img
               className="absolute w-[99.7%] h-[99.7%] z-[2] transition-transform duration-[900ms] ease-out"
@@ -168,6 +179,7 @@ const Cd = ({ size }: props) => {
             />
             <motion.div
               className="absolute w-full h-full"
+              style={{ rotateZ: rotateZ }}
               // animate={{ rotate: -360 }}
               // transition={{
               //   repeat: Infinity,

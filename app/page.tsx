@@ -101,12 +101,11 @@ export default function Home(props: typeof trackList) {
             (trackList.length - i + 1) * 0.0125
           }s`;
           imageImg.style.opacity = "0";
-          imageImg.style.transform = `translate3d(0,0,0) scaleY(${
-            3 - 2 * easeInQuad(scrollProgress)
-          })`;
         }
         animateImages(-3 + 3 * easeOutQuad(scrollProgress));
-        scrollImages.style.transform = `scaleY(${easeInQuad(scrollProgress)})`;
+        scrollImages.style.transform = `translateY(${
+          200 - easeInQuad(scrollProgress) * 200
+        }px)`;
 
         status1.style.transform = `translateY(${
           0 - 200 * easeInQuad(scrollProgress)
@@ -136,14 +135,13 @@ export default function Home(props: typeof trackList) {
           image.style.backgroundColor = "#000";
           imageImg.style.transitionDelay = `${i * 0.0125}s`;
           imageImg.style.opacity = "1";
-          imageImg.style.transform = `translate3d(0,0,0) scaleY(1)`;
           image.style.transform = `translate3d(0,0,0) skewX(0deg)`;
           imageImg.style.transform = `translate3d(0,0,0) skewX(0deg)`;
         }
         animateImages(easeImageScroll(scrollPercentage));
-        scrollImages.style.transform = `scaleY(1)`;
+        scrollImages.style.transform = `translateY(0)`;
         scrollImages.style.filter = `brightness(1)`;
-        // scrollImages.style.opacity = "1";
+        scrollImages.style.opacity = "1";
 
         status1.style.transform = `translateY(-200px)`;
         status1.style.opacity = "0";
@@ -171,16 +169,18 @@ export default function Home(props: typeof trackList) {
         for (let i = 0; i < trackList.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = image.querySelector("img") as HTMLElement;
-          image.style.transform = `translate3d(0,0,0) skewX(${
-            scrollProgress * 89.5
-          }deg)`;
-          imageImg.style.transform = `translate3d(0,0,0) skewX(${
-            -scrollProgress * 89.5
-          }deg)`;
+          image.style.transform = `translate3d(0,0,0) scaleX(${
+            1 - easeOutQuad(scrollProgress) * 0.99
+          })`;
+          imageImg.style.transform = `translate3d(0,0,0) scaleX(${
+            1 + easeOutQuad(scrollProgress)
+          })`;
         }
         animateImages(1 + scrollProgress);
-        scrollImages.style.filter = `brightness(${1 + scrollProgress * 3})`;
-        // scrollImages.style.opacity = `${1 - scrollProgress}`;
+        scrollImages.style.filter = `brightness(${1 + scrollProgress * 10})`;
+        scrollImages.style.opacity = `${
+          1 - easeOutQuad(easeOutQuad(scrollProgress)) * 0.85
+        }`;
       }
     }
 
@@ -201,12 +201,10 @@ export default function Home(props: typeof trackList) {
         image.style.width = `${width}vw`;
         imageImg.style.filter = `saturate(0.2) brightness(${Math.pow(
           width / maxWidth,
-          0.5
+          0.75
         )})`;
         maxImg.style.filter = `saturate(1) brightness(1)`;
         scrollLine.style.width = `${width}vw`;
-        // scrollLine.style.backgroundColor = "rgba(255,255,255,0)";
-        // maxScrollLine.style.backgroundColor = "rgba(255,255,255,0.025)";
 
         remainingWidth -= width;
       }
@@ -419,7 +417,7 @@ export default function Home(props: typeof trackList) {
                 {trackList.map((track, i) => (
                   <div
                     key={i}
-                    className="h-[200px] relative overflow-hidden origin-top"
+                    className="h-[200px] relative overflow-hidden origin-left"
                     style={{
                       transform: "translate3d(0,0,0)",
                       transition: "background-color 0.6s ease",
@@ -476,6 +474,107 @@ export default function Home(props: typeof trackList) {
         <h1>Renaissance</h1>
         <div className="absolute top-0 left-0 w-full h-full">
           <Cd size={500} />
+        </div>
+        <div className="absolute bottom-0 left-0 w-full detail text-[12px] flex flex-row items-start gap-20 z-10 pointer-events-none">
+          <div className="max-w-[550px] text-balance">
+            <div>
+              All rights go to Beyoncé and Parkwood Entertainment Ltd. © 2022
+            </div>
+            <br />
+            Not affiliated with or endorsed by Beyoncé or Parkwood Entertainment
+            Ltd.
+            <br />
+            All images and music used are the property of their respective
+            owners.
+            <br />
+            No copyright infringement intended.
+          </div>
+          <div className="flex-1 flex flex-wrap gap-x-20 gap-y-4 justify-end">
+            <a
+              className="pointer-events-auto"
+              href="https://www.instagram.com/beyonce/"
+              target="_blank"
+            >
+              Instagram
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://twitter.com/beyonce"
+              target="_blank"
+            >
+              Twitter
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://www.facebook.com/beyonce"
+              target="_blank"
+            >
+              Facebook
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://www.youtube.com/user/beyonce"
+              target="_blank"
+            >
+              YouTube
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://open.spotify.com/artist/6vWDO969PvNqNYHIOW5v0m"
+              target="_blank"
+            >
+              Spotify
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://music.apple.com/us/artist/beyonc%C3%A9/1419227"
+              target="_blank"
+            >
+              Apple Music
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://tidal.com/browse/artist/4443"
+              target="_blank"
+            >
+              Tidal
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://www.amazon.com/Beyonce/e/B00197R8L8"
+              target="_blank"
+            >
+              Amazon
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://www.beyonce.com/"
+              target="_blank"
+            >
+              Website
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://www.beyonce.com/shop/"
+              target="_blank"
+            >
+              Shop
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://www.beyonce.com/foundation/"
+              target="_blank"
+            >
+              Foundation
+            </a>
+            <a
+              className="pointer-events-auto"
+              href="https://www.beyonce.com/ivy-park/"
+              target="_blank"
+            >
+              Ivy Park
+            </a>
+          </div>
         </div>
       </section>
     </main>
