@@ -252,7 +252,7 @@ const BreakMySoul: React.FC = () => {
         <div className="bg">
           <div className="dsdsf">
             <div className="dsdsfdfs">
-              <p>
+              <p className="text-balance">
                 The first single of the album, Break My Soul is the
                 quintessential nu-disco earworm to jam to, as evidenced by its
                 #1 peak on the Hot 100.

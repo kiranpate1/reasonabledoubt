@@ -79,6 +79,7 @@ sup {
   z-index: -1;
   opacity: 0;
   text-align: right;
+  text-wrap: balance;
 }
 
 #image-2 .info {

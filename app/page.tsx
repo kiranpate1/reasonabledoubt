@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect } from "react";
 import Cd from "../components/Cd/Cd";
+import { i } from "motion/react-client";
 
 const trackList = [
   { name: "I'M THAT GIRL", src: "/images/home/1.png", color: "#fff" },
@@ -316,19 +317,36 @@ export default function Home(props: typeof trackList) {
     window.addEventListener("resize", handleImageResize, {
       passive: true,
     });
+
+    const footerLinks = document.getElementById("footerLinks") as HTMLElement;
+    const brighten = document.querySelectorAll(
+      ".brighten"
+    ) as NodeListOf<HTMLElement>;
+
+    footerLinks.addEventListener("mouseenter", () => {
+      for (let i = 0; i < brighten.length; i++) {
+        brighten[i].style.filter = "brightness(1.8)";
+      }
+    });
+
+    footerLinks.addEventListener("mouseleave", () => {
+      for (let i = 0; i < brighten.length; i++) {
+        brighten[i].style.filter = "brightness(1)";
+      }
+    });
   }, []);
 
   return (
     <main className="w-screen flex flex-col row-start-2 items-center sm:items-start text-[#fff]">
       <section className="relative w-full h-screen">
-        <h1>Renaissance</h1>
+        <h1>Renaissance is an album by recording artist Beyoncé</h1>
       </section>
       <section
         id="scrollTrack"
         className="relative w-screen"
         style={{ height: `${scrollHeight}vh` }}
       >
-        <div className="relative pointer-events-none flex h-0 w-screen items-start z-11">
+        <div className="relative pointer-events-none flex h-0 w-screen items-start z-[12]">
           <div className="relative w-screen h-[200vh] top-[-100vh]">
             <div className="sticky top-0 w-screen min-h-screen flex items-start">
               <div
@@ -359,7 +377,7 @@ export default function Home(props: typeof trackList) {
           </div>
         </div>
         <div
-          className="absolute pointer-events-none w-screen left-0 z-10"
+          className="absolute pointer-events-none w-screen left-0 z-[11]"
           style={{
             top: `calc(100vh - ${imageHeight}px - 18px)`,
             height: `calc(${scrollHeight - 100}vh + ${imageHeight}px + 18px)`,
@@ -480,7 +498,10 @@ export default function Home(props: typeof trackList) {
             <br />
             No copyright infringement intended.
           </div>
-          <div className="flex-1 flex flex-wrap gap-x-20 gap-y-4 justify-end">
+          <div
+            id="footerLinks"
+            className="flex-1 flex flex-wrap gap-x-20 gap-y-4 justify-end"
+          >
             <a
               className="pointer-events-auto"
               href="https://www.instagram.com/beyonce/"

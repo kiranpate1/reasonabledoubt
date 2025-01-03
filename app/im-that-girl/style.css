@@ -1,0 +1,53 @@
+body {
+  background: #fff;
+}
+
+.scroll-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: scroll;
+  padding: 0 50vw;
+}
+
+.scroll-container > div {
+  flex: 0 0 auto;
+  width: 600px;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+.scroll-container > div > img {
+  width: 300px;
+  height: 500px;
+  background: red;
+  object-fit: cover;
+}
+
+.selectors {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+}
+
+.selector {
+  width: 6px;
+  height: 6px;
+  background: black;
+  border-radius: 50%;
+}
+
+/* h1 {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Cutive Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+} */

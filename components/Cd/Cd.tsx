@@ -129,31 +129,36 @@ const Cd = ({ size }: props) => {
         >
           <div className="absolute w-[97.5%] h-[97.5%] flex justify-center items-center z-[2] mix-blend-hard-light duration-[900ms] ease-out">
             <motion.img
-              className="absolute w-[102%] h-[102%] z-[4] mix-blend-plus-lighter opacity-70 duration-[900ms] ease-out"
+              className="brighten absolute w-[102%] h-[102%] z-[4] mix-blend-plus-lighter opacity-70 duration-[900ms] ease-out"
               src="/images/cd/sat2.png"
               alt="sat2"
-              style={{ objectFit: "cover", rotateZ: rotateZ }}
+              style={{
+                objectFit: "cover",
+                rotateZ: rotateZ,
+                transition: "filter 0.2s ease",
+              }}
             />
             <motion.img
-              className="absolute w-[102%] h-[102%] z-[3] mix-blend-plus-lighter"
+              className="brighten absolute w-[102%] h-[102%] z-[3] mix-blend-plus-lighter"
               src="/images/cd/sat.png"
               alt="sat"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", transition: "filter 0.2s ease" }}
             />
             <motion.img
-              className="absolute w-[102%] h-[102%] z-[2] opacity-100 duration-[900ms] ease-out"
+              className="brighten absolute w-[102%] h-[102%] z-[2] opacity-100 duration-[900ms] ease-out"
               src="/images/cd/mask.png"
               alt="mask"
               style={{
                 objectFit: "cover",
                 rotateZ: rotateZ,
+                transition: "filter 0.2s ease",
               }}
             />
             <motion.img
-              className="absolute w-[99.5%] h-[99.5%] z-[1]"
+              className="brighten absolute w-[99.5%] h-[99.5%] z-[1]"
               src="/images/cd/ren.png"
               alt="bey"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", transition: "filter 0.2s ease" }}
               animate={{ rotate: -360 }}
               transition={{
                 repeat: Infinity,
@@ -180,8 +185,8 @@ const Cd = ({ size }: props) => {
               style={{ objectFit: "cover", x: translateX, y: translateY }}
             />
             <motion.div
-              className="absolute w-full h-full z-[100] duration-[900ms] ease-out"
-              style={{ rotateZ: rotateZ }}
+              className="brighten absolute w-full h-full z-[100] duration-[900ms] ease-out"
+              style={{ rotateZ: rotateZ, transition: "filter 0.2s ease" }}
               // animate={{ rotate: -360 }}
               // transition={{
               //   repeat: Infinity,
