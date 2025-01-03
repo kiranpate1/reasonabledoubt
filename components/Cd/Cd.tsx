@@ -134,22 +134,25 @@ const Cd = ({ size }: props) => {
         >
           <div className="absolute w-[97.5%] h-[97.5%] flex justify-center items-center z-[2] mix-blend-hard-light">
             <motion.img
-              className="absolute w-full h-full z-[4] mix-blend-plus-lighter opacity-70"
-              src="/images/cd/sat3.png"
+              className="absolute w-[102%] h-[102%] z-[4] mix-blend-plus-lighter opacity-70"
+              src="/images/cd/sat2.png"
               alt="sat2"
               style={{ objectFit: "cover", rotateZ: rotateZ }}
             />
             <motion.img
-              className="absolute w-full h-full z-[3] mix-blend-hard-light"
+              className="absolute w-[102%] h-[102%] z-[3] mix-blend-plus-lighter"
               src="/images/cd/sat.png"
               alt="sat"
-              style={{ objectFit: "cover", rotateZ: rotateZ }}
+              style={{ objectFit: "cover" }}
             />
             <motion.img
-              className="absolute w-full h-full z-[2] opacity-100"
+              className="absolute w-[102%] h-[102%] z-[2] opacity-100"
               src="/images/cd/mask.png"
               alt="mask"
-              style={{ objectFit: "cover", rotateZ: rotateZ }}
+              style={{
+                objectFit: "cover",
+                filter: "brightness(1)",
+              }}
             />
             <motion.img
               className="absolute w-[99.5%] h-[99.5%] z-[1]"
@@ -169,7 +172,11 @@ const Cd = ({ size }: props) => {
               className="absolute w-full h-full z-[1]"
               src="/images/cd/cd1.png"
               alt="cd"
-              style={{ objectFit: "cover", rotateZ: rotateZ }}
+              style={{
+                objectFit: "cover",
+                rotateZ: rotateZ,
+                filter: "brightness(1.2)",
+              }}
             />
             <motion.img
               className="absolute w-[99.7%] h-[99.7%] z-[2] transition-transform duration-[900ms] ease-out"
@@ -194,7 +201,7 @@ const Cd = ({ size }: props) => {
                 style={{
                   objectFit: "cover",
                   transform: "translate(25%,-25%)",
-                  opacity: isNaN(opacity1.get()) ? 0 : opacity1,
+                  opacity: 0,
                 }}
               />
               <motion.img
@@ -203,7 +210,7 @@ const Cd = ({ size }: props) => {
                 alt="mask"
                 style={{
                   objectFit: "cover",
-                  transform: "translate(-25%,25%) scale(-1,-1)",
+                  transform: "translate(-50%,0%) scale(-1,-1)",
                   opacity: isNaN(opacity2.get()) ? 0 : opacity2,
                 }}
               />

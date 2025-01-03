@@ -38,6 +38,7 @@ const trackList = [
 export default function Home(props: typeof trackList) {
   const maxWidth = 17;
   const scrollHeight = 400;
+  const imageHeight = 200;
 
   useEffect(() => {
     const scrollImages = document.getElementById("scrollImages") as HTMLElement;
@@ -104,11 +105,11 @@ export default function Home(props: typeof trackList) {
         }
         animateImages(-3 + 3 * easeOutQuad(scrollProgress));
         scrollImages.style.transform = `translateY(${
-          200 - easeInQuad(scrollProgress) * 200
+          imageHeight - easeInQuad(scrollProgress) * imageHeight
         }px)`;
 
         status1.style.transform = `translateY(${
-          0 - 200 * easeInQuad(scrollProgress)
+          0 - imageHeight * easeInQuad(scrollProgress)
         }px)`;
         status1.style.opacity = "1";
         status2.style.opacity = "0";
@@ -143,7 +144,7 @@ export default function Home(props: typeof trackList) {
         scrollImages.style.filter = `brightness(1)`;
         scrollImages.style.opacity = "1";
 
-        status1.style.transform = `translateY(-200px)`;
+        status1.style.transform = `translateY(-${imageHeight}px)`;
         status1.style.opacity = "0";
         status2.style.opacity = "1";
       }
@@ -320,18 +321,6 @@ export default function Home(props: typeof trackList) {
   return (
     <main className="w-screen flex flex-col row-start-2 items-center sm:items-start text-[#fff]">
       <section className="relative w-full h-screen">
-        {/* <div
-          className="absolute top-0 left-0 w-screen"
-          style={{ height: "calc(200vh - 200px)" }}
-        >
-          <img
-            className="w-full h-full object-cover"
-            src="/images/image_57.webp"
-            width={200}
-            height={300}
-            alt=""
-          />
-        </div> */}
         <h1>Renaissance</h1>
       </section>
       <section
@@ -372,8 +361,8 @@ export default function Home(props: typeof trackList) {
         <div
           className="absolute pointer-events-none w-screen left-0 z-10"
           style={{
-            top: "calc(100vh - 200px - 18px)",
-            height: `calc(${scrollHeight - 100}vh + 18px)`,
+            top: `calc(100vh - ${imageHeight}px - 18px)`,
+            height: `calc(${scrollHeight - 100}vh + ${imageHeight}px + 18px)`,
           }}
         >
           <div
@@ -417,8 +406,9 @@ export default function Home(props: typeof trackList) {
                 {trackList.map((track, i) => (
                   <div
                     key={i}
-                    className="h-[200px] relative overflow-hidden origin-left"
+                    className="relative overflow-hidden origin-left"
                     style={{
+                      height: `${imageHeight}px`,
                       transform: "translate3d(0,0,0)",
                       transition: "background-color 0.6s ease",
                     }}
@@ -426,8 +416,8 @@ export default function Home(props: typeof trackList) {
                     <Image
                       className="w-full object-cover h-full origin-top"
                       src={track.src}
-                      width={200}
-                      height={300}
+                      width={imageHeight}
+                      height={imageHeight}
                       alt={track.name}
                       style={{
                         transition: "opacity 0.6s ease",
@@ -442,8 +432,9 @@ export default function Home(props: typeof trackList) {
         </div>
         <div
           id="scrollLines"
-          className="absolute w-screen h-full bottom-[200px] left-0 flex flex-row gap-[0px]"
+          className="absolute w-screen h-full left-0 flex flex-row gap-[0px]"
           style={{
+            bottom: `${imageHeight}px`,
             height: `${scrollHeight - 100}vh`,
           }}
         >
@@ -472,7 +463,7 @@ export default function Home(props: typeof trackList) {
       </section>
       <section className="relative w-full h-screen">
         <h1>Renaissance</h1>
-        <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute top-0 left-0 w-screen h-screen overflow-hidden">
           <Cd size={500} />
         </div>
         <div className="absolute bottom-0 left-0 w-full detail text-[12px] flex flex-row items-start gap-20 z-10 pointer-events-none">
