@@ -469,7 +469,10 @@ export default function Home(props: typeof trackList) {
               <a
                 className="whitespace-nowrap self-center"
                 key={index}
-                href={`/${track.name.toLowerCase().replace(/ /g, "-")}`}
+                href={`/${track.name
+                  .toLowerCase()
+                  .replace(/ /g, "-")
+                  .replace(/'/g, "")}`}
                 style={{ gridArea: `${index + 1} / 1 / span 1 / span 1` }}
               >
                 {index + 1}.{track.name}

@@ -15,11 +15,15 @@ declare global {
 
 const Cozy: React.FC = () => {
   useEffect(() => {
+    setup();
+
     const container = document.querySelector("main") as HTMLElement;
     let containerHalf = container.getBoundingClientRect().width / 4;
-
     const containerItems = document.querySelectorAll(
-      ".scroll-items > div"
+      "#scrollItems > div"
+    ) as NodeListOf<HTMLElement>;
+    const containerItemsLines = document.querySelectorAll(
+      "#scrollItemsLines > div"
     ) as NodeListOf<HTMLElement>;
     const selectors = document.querySelector(".selectors") as HTMLElement;
     const h1 = document.querySelector("h1") as HTMLElement;
@@ -53,23 +57,55 @@ const Cozy: React.FC = () => {
       const textBg = document.querySelector("#textBg") as HTMLElement;
       for (let i = 0; i < 40; i++) {
         const h2 = document.createElement("h2") as HTMLElement;
-        h2.classList.add(
-          "whitespace-nowrap",
-          "min-w-[200vw]",
-          "text-center",
-          "opacity-20"
-        );
+        h2.classList.add("whitespace-nowrap", "min-w-[200vw]", "text-center");
         const text =
           phrases[Math.floor(Math.random() * phrases.length)] +
           phrases[Math.floor(Math.random() * phrases.length)];
-        const textSplit = text.split("");
+        const textSplit = text.split(" ");
 
         for (let j = 0; j < textSplit.length; j++) {
           const span = document.createElement("span") as HTMLElement;
-          span.innerHTML = textSplit[j];
+          span.innerHTML = " " + textSplit[j];
           h2.appendChild(span);
         }
         textBg.appendChild(h2);
+      }
+
+      const scrollItems = document.querySelector("#scrollItems") as HTMLElement;
+
+      for (let i = 1; i < 8; i++) {
+        const div = document.createElement("div") as HTMLElement;
+        const transform = document.createElement("div") as HTMLElement;
+        transform.classList.add("transform");
+        const img = document.createElement("img") as HTMLImageElement;
+        img.src = `/images/im-that-girl/${i}.webp`;
+        transform.appendChild(img);
+        div.appendChild(transform);
+        scrollItems.appendChild(div);
+      }
+
+      const scrollItemsLines = document.querySelector(
+        "#scrollItemsLines"
+      ) as HTMLElement;
+
+      for (let i = 1; i < 8; i++) {
+        const div = document.createElement("div") as HTMLElement;
+        const transform = document.createElement("div") as HTMLElement;
+        transform.classList.add("transform");
+        const lineLeft = document.createElement("div") as HTMLElement;
+        lineLeft.classList.add("line-left");
+        const lineRight = document.createElement("div") as HTMLElement;
+        lineRight.classList.add("line-right");
+        const lineTop = document.createElement("div") as HTMLElement;
+        lineTop.classList.add("line-top");
+        const lineBottom = document.createElement("div") as HTMLElement;
+        lineBottom.classList.add("line-bottom");
+        transform.appendChild(lineLeft);
+        transform.appendChild(lineRight);
+        transform.appendChild(lineTop);
+        transform.appendChild(lineBottom);
+        div.appendChild(transform);
+        scrollItemsLines.appendChild(div);
       }
     }
 
@@ -98,20 +134,74 @@ const Cozy: React.FC = () => {
     function animateIntro() {
       section1();
       function section1() {
-        // var container = document.querySelector(".no1") as HTMLElement;
-        // var containerHeight = container.getBoundingClientRect().height;
-        // //const offset = window.innerHeight * 0.4;
-        // const offset = 0;
-        // const path = container.getBoundingClientRect().top - offset;
-        // const end = containerHeight - offset;
-        // if (path >= 0) {
-        // }
-        // if (path < 0 && path > -end) {
-        //   var progress = path / -end;
-        //   var ease = easeInQuad(progress);
-        // }
-        // if (path <= -end) {
-        // }
+        var container = document.querySelector("#intro") as HTMLElement;
+        var containerHeight = container.getBoundingClientRect().height;
+        //const offset = window.innerHeight * 0.4;
+        const offset = 0;
+        const path = container.getBoundingClientRect().top - offset;
+        const end = containerHeight - offset;
+        const textBgs = document.querySelectorAll(
+          "#textBg h2"
+        ) as NodeListOf<HTMLElement>;
+
+        if (path >= 0) {
+        }
+        if (path < 0 && path > -end) {
+          var progress = path / -end;
+
+          textBgs.forEach((item, i) => {
+            const textBgItem = textBgs[textBgs.length - i] as HTMLElement;
+            const ratio = Math.max(
+              0,
+              Math.min(
+                1,
+                (-path - (end * 1 * i) / textBgs.length) / (end * 0.5)
+              )
+            );
+            const adjRatio = easeInOutQuint(ratio);
+            if (i > 0 && adjRatio > 0) {
+              const textBgItems = textBgItem.querySelectorAll(
+                "span"
+              ) as NodeListOf<HTMLElement>;
+              const randomIndices = Array.from(
+                { length: textBgItems.length },
+                (_, i) => i
+              ).sort(() => Math.random() - 0.5);
+              textBgItems.forEach((item) => {
+                if (item.dataset.timeoutId) {
+                  clearTimeout(Number(item.dataset.timeoutId));
+                }
+              });
+              randomIndices.forEach((index, i) => {
+                const timeoutId = setTimeout(() => {
+                  textBgItems[index].style.opacity = "0";
+                }, i * 100); // Adjust the delay as needed
+                textBgItems[index].dataset.timeoutId = String(timeoutId);
+              });
+            } else if (i > 0 && adjRatio <= 0) {
+              const textBgItems = textBgItem.querySelectorAll(
+                "span"
+              ) as NodeListOf<HTMLElement>;
+              const randomIndices = Array.from(
+                { length: textBgItems.length },
+                (_, i) => i
+              ).sort(() => Math.random() - 0.5);
+              textBgItems.forEach((item) => {
+                if (item.dataset.timeoutId) {
+                  clearTimeout(Number(item.dataset.timeoutId));
+                }
+              });
+              randomIndices.forEach((index, i) => {
+                const timeoutId = setTimeout(() => {
+                  textBgItems[index].style.opacity = "0.2";
+                }, i * 20); // Adjust the delay as needed
+                textBgItems[index].dataset.timeoutId = String(timeoutId);
+              });
+            }
+          });
+        }
+        if (path <= -end) {
+        }
       }
 
       section2();
@@ -133,19 +223,25 @@ const Cozy: React.FC = () => {
         scrollContainer.scrollLeft = scrollProgress - containerHalf;
 
         containerItems.forEach((item, i) => {
-          const img = item.querySelector("img") as HTMLImageElement;
-          const start = containerItemsLeft[i] + 100;
-          const end = start + 400; //width of item goes here
+          const transformElm = item.querySelector(".transform") as HTMLElement;
+          const transformLinesElm = containerItemsLines[i].querySelector(
+            ".transform"
+          ) as HTMLElement;
+          const img = transformElm.querySelector(
+            ".transform img"
+          ) as HTMLImageElement;
+          const start = containerItemsLeft[i] + 300;
+          const end = start + 600; //width of item goes here
           const approaching = start - 700; //change on resize
           const leaving = end + 700; //change on resize
           const translateZ = 400;
           const rotateY = 30 * 2;
-          const blur = 20;
+          const blur = 1;
 
           //before
           if (scrollProgress < approaching) {
-            img.style.transform = `translateX(100%) translateZ(${-translateZ}px) rotateY(0deg)`;
-            img.style.filter = `blur(${blur}px)`;
+            transformElm.style.transform = `translateX(100%) translateZ(${-translateZ}px) rotateY(0deg)`;
+            img.style.filter = `brightness(${1 - blur})`;
             selectorsAll[i].style.opacity = "0.25";
           }
           //approaching
@@ -156,31 +252,44 @@ const Cozy: React.FC = () => {
             );
             var ease = easeInOutQuint(progress);
             if (progress < 0.5) {
-              img.style.transformOrigin = `${100 - ease * 100}% center`;
-              img.style.transform = `translateX(${
-                100 - ease * 50
-              }%) translateZ(${-translateZ + ease * translateZ}px) rotateY(${
-                progress * rotateY
-              }deg)`;
-              img.style.filter = `blur(${blur - ease * blur}px)`;
+              const toTransform = [transformElm, transformLinesElm];
+
+              toTransform.forEach((elm) => {
+                elm.style.transformOrigin = `${100 - ease * 100}% center`;
+                elm.style.transform = `translateX(${
+                  100 - ease * 50
+                }%) translateZ(${-translateZ + ease * translateZ}px) rotateY(${
+                  progress * rotateY
+                }deg)`;
+              });
+
+              img.style.filter = `brightness(${ease * blur})`;
             } else if (progress > 0.5) {
-              img.style.transformOrigin = `${100 - ease * 100}% center`;
-              img.style.transform = `translateX(${
-                100 - ease * 50
-              }%) translateZ(${-translateZ + ease * translateZ}px) rotateY(${
-                rotateY - progress * rotateY
-              }deg)`;
-              img.style.filter = `blur(${blur - ease * blur}px)`;
+              const toTransform = [transformElm, transformLinesElm];
+
+              toTransform.forEach((elm) => {
+                elm.style.transformOrigin = `${100 - ease * 100}% center`;
+                elm.style.transform = `translateX(${
+                  100 - ease * 50
+                }%) translateZ(${-translateZ + ease * translateZ}px) rotateY(${
+                  rotateY - progress * rotateY
+                }deg)`;
+              });
+
+              img.style.filter = `brightness(${ease * blur})`;
             }
             selectorsAll[i].style.opacity = "0.25";
           }
           //inside
           if (scrollProgress > start && scrollProgress < end) {
-            img.style.transform =
-              "translateX(50%) translateZ(0px) rotateY(0deg)";
-            img.style.filter = "blur(0px)";
+            const toTransform = [transformElm, transformLinesElm];
+
+            toTransform.forEach((elm) => {
+              elm.style.transform = `translateX(50%) translateZ(0px) rotateY(0deg)`;
+            });
+
+            img.style.filter = "brightness(1)";
             selectorsAll[i].style.opacity = "1";
-            h1.innerHTML = img.alt;
           }
           //leaving
           if (scrollProgress >= end && scrollProgress < leaving) {
@@ -190,28 +299,43 @@ const Cozy: React.FC = () => {
             );
             var ease = easeInOutQuint(progress);
             if (progress < 0.5) {
-              img.style.transformOrigin = `${100 - ease * 100}% center`;
-              img.style.transform = `translateX(${
-                50 - ease * 50
-              }%) translateZ(${0 - ease * translateZ}px) rotateY(${
-                -progress * rotateY
-              }deg)`;
-              img.style.filter = `blur(${ease * blur}px)`;
+              const toTransform = [transformElm, transformLinesElm];
+
+              toTransform.forEach((elm) => {
+                elm.style.transformOrigin = `${100 - ease * 100}% center`;
+                elm.style.transform = `translateX(${
+                  50 - ease * 50
+                }%) translateZ(${0 - ease * translateZ}px) rotateY(${
+                  -progress * rotateY
+                }deg)`;
+              });
+
+              img.style.filter = `brightness(${blur - ease * blur})`;
             } else if (progress > 0.5) {
-              img.style.transformOrigin = `${100 - ease * 100}% center`;
-              img.style.transform = `translateX(${
-                50 - ease * 50
-              }%) translateZ(${0 - ease * translateZ}px) rotateY(${
-                -rotateY + progress * rotateY
-              }deg)`;
-              img.style.filter = `blur(${ease * blur}px)`;
+              const toTransform = [transformElm, transformLinesElm];
+
+              toTransform.forEach((elm) => {
+                elm.style.transformOrigin = `${100 - ease * 100}% center`;
+                elm.style.transform = `translateX(${
+                  50 - ease * 50
+                }%) translateZ(${0 - ease * translateZ}px) rotateY(${
+                  -rotateY + progress * rotateY
+                }deg)`;
+              });
+
+              img.style.filter = `brightness(${blur - ease * blur})`;
             }
             selectorsAll[i].style.opacity = "0.25";
           }
           //after
           if (scrollProgress > leaving) {
-            img.style.transform = `translateX(0%) translateZ(${-translateZ}px) rotateY(0deg)`;
-            img.style.filter = `blur(${blur}px)`;
+            const toTransform = [transformElm, transformLinesElm];
+
+            toTransform.forEach((elm) => {
+              elm.style.transform = `translateX(0%) translateZ(${-translateZ}px) rotateY(0deg)`;
+            });
+
+            img.style.filter = `brightness(${1 - blur})`;
             selectorsAll[i].style.opacity = "0.25";
           }
         });
@@ -232,7 +356,6 @@ const Cozy: React.FC = () => {
     }
 
     //listeners
-    setup();
     animateIntro();
     window.addEventListener("scroll", handleAnimateIntroScroll);
     window.addEventListener("resize", handleAnimateIntroResize, {
@@ -244,63 +367,44 @@ const Cozy: React.FC = () => {
       <div className="fixed top-0 left-0 w-screen h-screen flex flex-col justify-start items-stretch overflow-hidden text-white">
         <div
           id="textBg"
-          className="h-screen w-screen flex flex-col justify-end items-center text-white"
+          className="h-screen w-screen flex flex-col justify-start items-center text-white"
         ></div>
       </div>
-      <section className="h-screen w-screen relative text-white"></section>
+      <section
+        id="intro"
+        className="h-[300vh] w-screen relative text-white"
+      ></section>
       <section id="scroll-section" className="h-[400vh]">
         <div
           id="scroll-container"
           className="sticky top-0 left-0 w-screen h-screen overflow-hidden"
         >
           <div className="selectors"></div>
-          <div className="scroll-items absolute h-full flex items-center overflow-scroll py-0 px-[50vw]">
-            <div>
-              <img
-                src="https://assets.vogue.com/photos/64efa2113e89acbbb62489f4/master/w_1600%2Cc_limit/beyonce-marni-parkwood.jpg"
-                alt="Marni"
-              />
-            </div>
-            <div>
-              <img
-                src="https://assets.vogue.com/photos/64cbcf9934738028f805d911/master/w_1600%2Cc_limit/beyonce-dundas-parkwood%2520entertainment.jpeg"
-                alt="DUNDAS"
-              />
-            </div>
-            <div>
-              <img
-                src="https://www.redcarpet-fashionawards.com/wp-content/uploads/2023/09/Beyonce-Mugler.jpg"
-                alt="Mugler"
-              />
-            </div>
-            <div>
-              <img
-                src="https://hips.hearstapps.com/hmg-prod/images/362385712-1701964706892614-564253150938300928-n-64bd49b082932.jpg"
-                alt="Alexander McQueen"
-              />
-            </div>
-            <div>
-              <img
-                src="https://www.thesun.co.uk/wp-content/uploads/2023/08/beyonce_370593320_18431232178008035_5937122429800621287_njpg-JS840516919.jpg?strip=all&w=768"
-                alt="Gareth Pugh"
-              />
-            </div>
-            <div>
-              <img
-                src="https://www.thesun.co.uk/wp-content/uploads/2023/08/beyonce_370232065_18431230537008035_5756532687445147372_njpg-JS840516988.jpg?strip=all&w=768"
-                alt="Situationist x Yaspis"
-              />
-            </div>
-            <div>
-              <img
-                src="https://www.vibe.com/wp-content/uploads/2023/09/Screen-Shot-2023-09-25-at-9.39.40-AM.png?w=800"
-                alt="BOSS"
-              />
-            </div>
+          <div
+            id="scrollItemsLines"
+            className="scroll-items absolute h-full flex items-center py-0 px-[100vw]"
+          ></div>
+          <div
+            id="scrollItems"
+            className="scroll-items absolute h-full flex items-center py-0 px-[100vw]"
+          >
+            <h1 className="absolute z-10 top-0 left-0 w-screen h-screen text-right text-white">
+              It's not the
+              <br />
+              diamonds,
+            </h1>
+            <h1 className="absolute z-10 top-0 right-0 w-screen h-screen text-left text-white">
+              It's not the
+              <br />
+              pearls.
+            </h1>
           </div>
-          <h1 className="text-white"></h1>
         </div>
       </section>
+      <section
+        id="outro"
+        className="h-[300vh] w-screen relative text-white"
+      ></section>
     </main>
   );
 };
