@@ -232,9 +232,9 @@ const Cozy: React.FC = () => {
           ) as HTMLImageElement;
           const start = containerItemsLeft[i] + 300;
           const end = start + 600; //width of item goes here
-          const approaching = start - 700; //change on resize
-          const leaving = end + 700; //change on resize
-          const translateZ = 400;
+          const approaching = start - 300; //change on resize
+          const leaving = end + 300; //change on resize
+          const translateZ = 1000;
           const rotateY = 30 * 2;
           const blur = 1;
 
@@ -304,7 +304,7 @@ const Cozy: React.FC = () => {
               toTransform.forEach((elm) => {
                 elm.style.transformOrigin = `${100 - ease * 100}% center`;
                 elm.style.transform = `translateX(${
-                  50 - ease * 50
+                  50 + ease * 50
                 }%) translateZ(${0 - ease * translateZ}px) rotateY(${
                   -progress * rotateY
                 }deg)`;
@@ -317,7 +317,7 @@ const Cozy: React.FC = () => {
               toTransform.forEach((elm) => {
                 elm.style.transformOrigin = `${100 - ease * 100}% center`;
                 elm.style.transform = `translateX(${
-                  50 - ease * 50
+                  50 + ease * 50
                 }%) translateZ(${0 - ease * translateZ}px) rotateY(${
                   -rotateY + progress * rotateY
                 }deg)`;
@@ -332,7 +332,7 @@ const Cozy: React.FC = () => {
             const toTransform = [transformElm, transformLinesElm];
 
             toTransform.forEach((elm) => {
-              elm.style.transform = `translateX(0%) translateZ(${-translateZ}px) rotateY(0deg)`;
+              elm.style.transform = `translateX(100%) translateZ(${-translateZ}px) rotateY(0deg)`;
             });
 
             img.style.filter = `brightness(${1 - blur})`;
