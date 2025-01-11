@@ -15,8 +15,12 @@ declare global {
 
 const Cozy: React.FC = () => {
   useEffect(() => {
-    setup();
+    const scrollItems = document.querySelector("#scrollItems") as HTMLElement;
+    const scrollItemsLines = document.querySelector(
+      "#scrollItemsLines"
+    ) as HTMLElement;
 
+    setup();
     const container = document.querySelector("main") as HTMLElement;
     let containerHalf = container.getBoundingClientRect().width / 4;
     const containerItems = document.querySelectorAll(
@@ -26,7 +30,6 @@ const Cozy: React.FC = () => {
       "#scrollItemsLines > div"
     ) as NodeListOf<HTMLElement>;
     const selectors = document.querySelector(".selectors") as HTMLElement;
-    const h1 = document.querySelector("h1") as HTMLElement;
 
     containerItems.forEach((item, i) => {
       const selector = document.createElement("div") as HTMLElement;
@@ -71,8 +74,6 @@ const Cozy: React.FC = () => {
         textBg.appendChild(h2);
       }
 
-      const scrollItems = document.querySelector("#scrollItems") as HTMLElement;
-
       for (let i = 1; i < 8; i++) {
         const div = document.createElement("div") as HTMLElement;
         const transform = document.createElement("div") as HTMLElement;
@@ -83,10 +84,6 @@ const Cozy: React.FC = () => {
         div.appendChild(transform);
         scrollItems.appendChild(div);
       }
-
-      const scrollItemsLines = document.querySelector(
-        "#scrollItemsLines"
-      ) as HTMLElement;
 
       for (let i = 1; i < 8; i++) {
         const div = document.createElement("div") as HTMLElement;
@@ -150,7 +147,7 @@ const Cozy: React.FC = () => {
           var progress = path / -end;
 
           textBgs.forEach((item, i) => {
-            const textBgItem = textBgs[textBgs.length - i] as HTMLElement;
+            const textBgItem = textBgs[textBgs.length - 1 - i] as HTMLElement;
             const ratio = Math.max(
               0,
               Math.min(
@@ -193,7 +190,7 @@ const Cozy: React.FC = () => {
               });
               randomIndices.forEach((index, i) => {
                 const timeoutId = setTimeout(() => {
-                  textBgItems[index].style.opacity = "0.2";
+                  textBgItems[index].style.opacity = "0.15";
                 }, i * 20); // Adjust the delay as needed
                 textBgItems[index].dataset.timeoutId = String(timeoutId);
               });
@@ -201,6 +198,19 @@ const Cozy: React.FC = () => {
           });
         }
         if (path <= -end) {
+          textBgs.forEach((item) => {
+            const textBgItems = item.querySelectorAll(
+              "span"
+            ) as NodeListOf<HTMLElement>;
+            textBgItems.forEach((item) => {
+              if (item.dataset.timeoutId) {
+                clearTimeout(Number(item.dataset.timeoutId));
+              }
+            });
+            textBgItems.forEach((item) => {
+              item.style.opacity = "0";
+            });
+          });
         }
       }
 
@@ -213,12 +223,12 @@ const Cozy: React.FC = () => {
         const scrollHeight = scroll.getBoundingClientRect().height;
         const scrollTop = window.scrollY;
         const scrollStart = scroll.offsetTop - window.innerHeight;
-        const scrollEnd = scrollStart + scrollHeight - window.innerHeight;
+        const scrollEnd = scrollStart + scrollHeight + window.innerHeight;
         const scrollProgress =
           Math.max(
             0,
             Math.min((scrollTop - scrollStart) / (scrollEnd - scrollStart), 1)
-          ) * 5600;
+          ) * scrollItemsLines.getBoundingClientRect().width;
 
         scrollContainer.scrollLeft = scrollProgress - containerHalf;
 
@@ -232,17 +242,22 @@ const Cozy: React.FC = () => {
           ) as HTMLImageElement;
           const start = containerItemsLeft[i] + 300;
           const end = start + 600; //width of item goes here
-          const approaching = start - 300; //change on resize
-          const leaving = end + 300; //change on resize
+          const approaching = start - 600; //change on resize
+          const leaving = end + 600; //change on resize
           const translateZ = 1000;
           const rotateY = 30 * 2;
-          const blur = 1;
+          const saturate = 1;
 
           //before
           if (scrollProgress < approaching) {
-            transformElm.style.transform = `translateX(100%) translateZ(${-translateZ}px) rotateY(0deg)`;
-            img.style.filter = `brightness(${1 - blur})`;
-            selectorsAll[i].style.opacity = "0.25";
+            const toTransform = [transformElm, transformLinesElm];
+
+            toTransform.forEach((elm) => {
+              elm.style.transform = `translateX(100%) translateZ(${-translateZ}px) rotateY(0deg)`;
+            });
+
+            img.style.filter = `saturate(${1 - saturate})`;
+            selectorsAll[i].style.backgroundColor = "black";
           }
           //approaching
           if (scrollProgress > approaching && scrollProgress <= start) {
@@ -263,7 +278,7 @@ const Cozy: React.FC = () => {
                 }deg)`;
               });
 
-              img.style.filter = `brightness(${ease * blur})`;
+              img.style.filter = `saturate(${ease * saturate})`;
             } else if (progress > 0.5) {
               const toTransform = [transformElm, transformLinesElm];
 
@@ -276,9 +291,9 @@ const Cozy: React.FC = () => {
                 }deg)`;
               });
 
-              img.style.filter = `brightness(${ease * blur})`;
+              img.style.filter = `saturate(${ease * saturate})`;
             }
-            selectorsAll[i].style.opacity = "0.25";
+            selectorsAll[i].style.backgroundColor = "black";
           }
           //inside
           if (scrollProgress > start && scrollProgress < end) {
@@ -288,8 +303,8 @@ const Cozy: React.FC = () => {
               elm.style.transform = `translateX(50%) translateZ(0px) rotateY(0deg)`;
             });
 
-            img.style.filter = "brightness(1)";
-            selectorsAll[i].style.opacity = "1";
+            img.style.filter = "saturate(1)";
+            selectorsAll[i].style.backgroundColor = "white";
           }
           //leaving
           if (scrollProgress >= end && scrollProgress < leaving) {
@@ -310,7 +325,7 @@ const Cozy: React.FC = () => {
                 }deg)`;
               });
 
-              img.style.filter = `brightness(${blur - ease * blur})`;
+              img.style.filter = `saturate(${saturate - ease * saturate})`;
             } else if (progress > 0.5) {
               const toTransform = [transformElm, transformLinesElm];
 
@@ -323,9 +338,9 @@ const Cozy: React.FC = () => {
                 }deg)`;
               });
 
-              img.style.filter = `brightness(${blur - ease * blur})`;
+              img.style.filter = `saturate(${saturate - ease * saturate})`;
             }
-            selectorsAll[i].style.opacity = "0.25";
+            selectorsAll[i].style.backgroundColor = "black";
           }
           //after
           if (scrollProgress > leaving) {
@@ -335,8 +350,8 @@ const Cozy: React.FC = () => {
               elm.style.transform = `translateX(100%) translateZ(${-translateZ}px) rotateY(0deg)`;
             });
 
-            img.style.filter = `brightness(${1 - blur})`;
-            selectorsAll[i].style.opacity = "0.25";
+            img.style.filter = `saturate(${1 - saturate})`;
+            selectorsAll[i].style.backgroundColor = "black";
           }
         });
       }
@@ -375,14 +390,14 @@ const Cozy: React.FC = () => {
         className="h-[300vh] w-screen relative text-white"
       ></section>
       <section id="scroll-section" className="h-[400vh]">
+        <div className="selectors sticky top-4 left-0 flex gap-0 items-start w-max mx-auto"></div>
         <div
           id="scroll-container"
           className="sticky top-0 left-0 w-screen h-screen overflow-hidden"
         >
-          <div className="selectors"></div>
           <div
             id="scrollItemsLines"
-            className="scroll-items absolute h-full flex items-center py-0 px-[100vw]"
+            className="scroll-items absolute h-full flex items-center py-0 px-[100vw] overflow-hidden"
           ></div>
           <div
             id="scrollItems"

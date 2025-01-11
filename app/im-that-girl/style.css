@@ -13,7 +13,8 @@
   width: 600px;
   height: 750px;
   position: relative;
-  border: 1px solid var(--border-color);
+  padding: 1px;
+  /* border: 1px solid var(--border-color); */
 }
 
 .transform .line-left {
@@ -64,23 +65,18 @@
 }
 
 .selectors {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 4px;
+  border: 0.5px solid #787878;
 }
 
 .selector {
   width: 6px;
   height: 6px;
-  background: white;
-  border-radius: 50%;
+  border: 0.5px solid #787878;
+  background: black;
 }
 
 #textBg span {
-  opacity: 0.2;
+  opacity: 0.15;
 }
 
 /* h1 {

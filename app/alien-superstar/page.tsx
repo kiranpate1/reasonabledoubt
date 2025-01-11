@@ -4,6 +4,7 @@ import React, { use } from "react";
 import "../globals.css";
 import "./style.css";
 import { useEffect } from "react";
+import Nav from "../../components/Nav";
 
 declare global {
   interface Window {
@@ -211,6 +212,7 @@ const AlienSuperstar: React.FC = () => {
   }, []);
   return (
     <main style={{ height: "2000vh" }}>
+      <Nav />
       <section className="circle">
         <div className="phase1"></div>
         <div className="phase2"></div>

@@ -2,41 +2,12 @@
 
 import Image from "next/image";
 import { useEffect } from "react";
-import Cd from "../components/Cd/Cd";
+import Cd from "../components/Cd";
+import LoadingBar from "../components/LoadingBar";
 import { i } from "motion/react-client";
+import { projects } from "./projects";
 
-const trackList = [
-  { name: "I'M THAT GIRL", src: "/images/home/1.png", color: "#fff" },
-  { name: "COZY", src: "/images/home/2.png", color: "#F576C3" },
-  { name: "ALIEN SUPERSTAR", src: "/images/home/8.png", color: "#67C8FB" },
-  { name: "CUFF IT", src: "/images/home/10.png", color: "#713735" },
-  { name: "ENERGY", src: "/images/home/4.png", color: "#000" },
-  { name: "BREAK MY SOUL", src: "/images/home/18.png", color: "#E80000" },
-  { name: "CHURCH GIRL", src: "/images/home/17.png", color: "#F05F04" },
-  {
-    name: "PLASTIC OFF THE SOFA",
-    src: "/images/home/12.png",
-    color: "#F9D608",
-  },
-  { name: "VIRGO'S GROOVE", src: "/images/home/9.png", color: "#0DD431" },
-  { name: "MOVE", src: "/images/home/16.png", color: "#0100F4" },
-  { name: "HEATED", src: "/images/home/11.png", color: "#7F0C9B" },
-  { name: "THIQUE", src: "/images/home/14.png", color: "#EF16AB" },
-  { name: "ALL UP IN YOUR MIND", src: "/images/home/13.png", color: "#fff" },
-  {
-    name: "AMERICA HAS A PROBLEM",
-    src: "/images/home/3.png",
-    color: "#F576C3",
-  },
-  { name: "PURE/HONEY", src: "/images/home/20.png", color: "#67C8FB" },
-  { name: "SUMMER RENAISSANCE", src: "/images/home/5.png", color: "#713735" },
-  { name: "SUNSHINE", src: "/images/home/6.png", color: "#000" },
-  { name: "BROKEN", src: "/images/home/7.png", color: "#E80000" },
-  { name: "FREAKY", src: "/images/home/19.png", color: "#F05F04" },
-  { name: "SWEET", src: "/images/home/15.png", color: "#F9D608" },
-];
-
-export default function Home(props: typeof trackList) {
+export default function Home(props: "props") {
   const maxWidth = 17;
   const scrollHeight = 400;
   const imageHeight = 200;
@@ -49,10 +20,13 @@ export default function Home(props: typeof trackList) {
     const lines = document.querySelectorAll(
       "#scrollLines > div"
     ) as NodeListOf<HTMLElement>;
+    const arrows = document.querySelectorAll(
+      ".arrow"
+    ) as NodeListOf<HTMLElement>;
     const status1 = document.getElementById("status-1") as HTMLElement;
     const status2 = document.getElementById("status-2") as HTMLElement;
     const loadingBars = document.querySelectorAll(
-      "#loadingBar > div"
+      "#status-1 #loadingBar > div"
     ) as NodeListOf<HTMLElement>;
     const loadingMessage = document.getElementById(
       "loadingMessage"
@@ -92,15 +66,15 @@ export default function Home(props: typeof trackList) {
           window.scrollY / scrollTrack.offsetTop,
           1
         );
-        for (let i = 0; i < trackList.length; i++) {
+        for (let i = 0; i < projects.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = images[i].querySelector("img") as HTMLElement;
           image.style.transitionDelay = `${
-            (trackList.length - i + 1) * 0.0125
+            (projects.length - i + 1) * 0.0125
           }s`;
-          image.style.backgroundColor = trackList[i].color;
+          image.style.backgroundColor = projects[i].color;
           imageImg.style.transitionDelay = `${
-            (trackList.length - i + 1) * 0.0125
+            (projects.length - i + 1) * 0.0125
           }s`;
           imageImg.style.opacity = "0";
         }
@@ -130,7 +104,7 @@ export default function Home(props: typeof trackList) {
         const scrollPercentage =
           (window.scrollY - scrollTrack.offsetTop) /
           (scrollTrack.scrollHeight - window.innerHeight);
-        for (let i = 0; i < trackList.length; i++) {
+        for (let i = 0; i < projects.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = images[i].querySelector("img") as HTMLElement;
           image.style.transitionDelay = `${i * 0.0125}s`;
@@ -168,7 +142,7 @@ export default function Home(props: typeof trackList) {
           1
         );
 
-        for (let i = 0; i < trackList.length; i++) {
+        for (let i = 0; i < projects.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = image.querySelector("img") as HTMLElement;
           image.style.transform = `translate3d(0,0,0) scaleX(${
@@ -191,21 +165,26 @@ export default function Home(props: typeof trackList) {
       const widths = generateNumbers(input).finalWeights;
       const maxWeightIndex = generateNumbers(input).maxWeightIndex;
 
-      for (let i = 0; i < trackList.length; i++) {
+      for (let i = 0; i < projects.length; i++) {
         const image = images[i] as HTMLElement;
         const imageImg = image.querySelector("img") as HTMLElement;
-        const maxImg = images[maxWeightIndex].querySelector(
+        const activeImg = images[maxWeightIndex].querySelector(
           "img"
         ) as HTMLElement;
+        const activeArrow = arrows[maxWeightIndex] as HTMLElement;
         const scrollLine = lines[i] as HTMLElement;
-        const maxScrollLine = lines[maxWeightIndex] as HTMLElement;
+        const activeScrollLine = lines[maxWeightIndex] as HTMLElement;
         const width = widths[i];
         image.style.width = `${width}vw`;
         imageImg.style.filter = `saturate(0.2) brightness(${Math.pow(
           width / maxWidth,
           0.75
         )})`;
-        maxImg.style.filter = `saturate(1) brightness(1)`;
+        activeImg.style.filter = `saturate(1) brightness(1)`;
+        arrows[i].style.opacity = "0";
+        arrows[i].style.transform = "rotateZ(-90deg)";
+        activeArrow.style.opacity = "1";
+        activeArrow.style.transform = "rotateZ(0deg)";
         scrollLine.style.width = `${width}vw`;
 
         remainingWidth -= width;
@@ -214,7 +193,7 @@ export default function Home(props: typeof trackList) {
 
     // scrollImages.addEventListener("mouseenter", () => {
     //   isHovering = true;
-    //   for (let i = 0; i < trackList.length; i++) {
+    //   for (let i = 0; i < projects.length; i++) {
     //     const image = images[i] as HTMLElement;
     //     image.style.transition = "width 0.3s ease";
     //     image.addEventListener(
@@ -235,7 +214,7 @@ export default function Home(props: typeof trackList) {
     // scrollImages.addEventListener("mouseleave", () => {
     //   isHovering = false;
 
-    //   for (let i = 0; i < trackList.length; i++) {
+    //   for (let i = 0; i < projects.length; i++) {
     //     const image = images[i] as HTMLElement;
     //     image.style.transition = "width 0.3s ease";
     //     image.addEventListener(
@@ -251,7 +230,7 @@ export default function Home(props: typeof trackList) {
 
     function generateNumbers(percentage: number, maxWeight = maxWidth) {
       const totalSum = 100; // The target total sum
-      const numberOfElements = trackList.length; // Total elements in the array
+      const numberOfElements = projects.length; // Total elements in the array
       const midPoint = percentage * (numberOfElements - 1); // The "center" based on the percentage
 
       // Calculate preliminary weights based on proximity to the midpoint
@@ -350,28 +329,10 @@ export default function Home(props: typeof trackList) {
           <div className="relative w-screen h-[200vh] top-[-100vh]">
             <div className="sticky top-0 w-screen min-h-screen flex items-start">
               <div
-                className="absolute w-screen bottom-0 left-0 detail text-[12px] flex gap-20 pointer-events-auto"
+                className="absolute bottom-0 left-0 pointer-events-auto"
                 id="status-1"
               >
-                <div>Error 404</div>
-                <div className="flex flex-row gap-2 items-center">
-                  <div
-                    id="loadingBar"
-                    className="flex flex-row h-2 gap-[1px] py-0.5 px-[1.5px] border-white border-solid border-[0.5px]"
-                  >
-                    <div className="w-1 h-full bg-white"></div>
-                    <div className="w-1 h-full bg-white"></div>
-                    <div className="w-1 h-full bg-white"></div>
-                    <div className="w-1 h-full bg-white"></div>
-                    <div className="w-1 h-full bg-white"></div>
-                    <div className="w-1 h-full bg-white"></div>
-                    <div className="w-1 h-full bg-white"></div>
-                    <div className="w-1 h-full bg-white"></div>
-                    <div className="w-1 h-full bg-white"></div>
-                    <div className="w-1 h-full bg-white"></div>
-                  </div>
-                  <div id="loadingMessage">Retrieving songs...</div>
-                </div>
+                <LoadingBar status="Error 404" message="Retrieving songs..." />
               </div>
             </div>
           </div>
@@ -384,31 +345,13 @@ export default function Home(props: typeof trackList) {
           }}
         >
           <div
-            className="sticky w-screen top-0 left-0 detail text-[12px] flex gap-20 bg-black pointer-events-auto"
+            className="sticky top-0 left-0 bg-black pointer-events-auto"
             style={{
               borderBottom: "1px solid rgba(255,255,255,0.15)",
             }}
             id="status-2"
           >
-            <div>Success!!</div>
-            <div className="flex flex-row gap-2 items-center">
-              <div
-                id=""
-                className="flex flex-row h-2 gap-[1px] py-0.5 px-[1.5px] border-white border-solid border-[0.5px]"
-              >
-                <div className="w-1 h-full bg-white"></div>
-                <div className="w-1 h-full bg-white"></div>
-                <div className="w-1 h-full bg-white"></div>
-                <div className="w-1 h-full bg-white"></div>
-                <div className="w-1 h-full bg-white"></div>
-                <div className="w-1 h-full bg-white"></div>
-                <div className="w-1 h-full bg-white"></div>
-                <div className="w-1 h-full bg-white"></div>
-                <div className="w-1 h-full bg-white"></div>
-                <div className="w-1 h-full bg-white"></div>
-              </div>
-              <div id="loadingMessage">Found 16 songs.</div>
-            </div>
+            <LoadingBar status="Success!!" message="Found 16 songs." />
           </div>
         </div>
         <div className="relative z-10 pointer-events-none flex h-0 w-screen items-start">
@@ -421,7 +364,7 @@ export default function Home(props: typeof trackList) {
                 id="scrollImages"
                 className="absolute w-screen bottom-0 left-0 flex flex-row gap-[0px] pointer-events-auto origin-bottom overflow-hidden"
               >
-                {trackList.map((track, i) => (
+                {projects.map((track, i) => (
                   <div
                     key={i}
                     className="relative overflow-hidden origin-left"
@@ -456,14 +399,14 @@ export default function Home(props: typeof trackList) {
             height: `${scrollHeight - 100}vh`,
           }}
         >
-          {trackList.map((track, index) => (
+          {projects.map((track, index) => (
             <div
               key={index}
               className="relative h-full grid"
               style={{
                 borderLeft: "0.5px solid rgba(255,255,255,0.15)",
                 borderRight: "0.5px solid rgba(255,255,255,0.15)",
-                gridTemplateRows: `repeat(${trackList.length}, 1fr)`,
+                gridTemplateRows: `repeat(${projects.length}, 1fr)`,
               }}
             >
               <a
@@ -475,7 +418,22 @@ export default function Home(props: typeof trackList) {
                   .replace(/'/g, "")}`}
                 style={{ gridArea: `${index + 1} / 1 / span 1 / span 1` }}
               >
-                {index + 1}.{track.name}
+                {index + 1}.{track.name} <br />{" "}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="arrow opacity-0 duration-200 -rotate-90"
+                >
+                  <path
+                    d="M2 8H14M14 8L9.5 3.5M14 8L9.5 12.5"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </a>
             </div>
           ))}
