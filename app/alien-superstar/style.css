@@ -206,7 +206,7 @@
 }
 
 .hud,
-.detail {
+.sticky-img .detail {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -324,7 +324,7 @@
   transform: translate3d(0, 0, 0);
 }
 
-.unique {
+.helmut .unique {
   position: absolute;
   left: -7vh;
   top: 100vh;

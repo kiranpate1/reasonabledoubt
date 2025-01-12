@@ -4,6 +4,7 @@ import React, { use } from "react";
 import "../globals.css";
 import "./style.css";
 import { useEffect } from "react";
+import Nav from "../../components/Nav";
 
 declare global {
   interface Window {
@@ -226,27 +227,30 @@ const Cozy: React.FC = () => {
     window.addEventListener("resize", setup);
   }, []);
   return (
-    <section className="intro">
-      <div className="content">
-        <div className="panels"></div>
-        <svg
-          className="bey-cutout"
-          width="100%"
-          viewBox="0 0 1999 1124"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            opacity="0.5"
-            d="M319.5 898.5L303 966V1124H1740.5V1031.5L1713.5 994L1653.5 976.5L1590 970.5L1226.5 976.5L1068 849H958L878 834.5H827.5L738.5 744L663 703L569 699L445.5 752L348 832L319.5 898.5Z"
-            fill="#D9D9D9"
-          />
-        </svg>
-      </div>
-      <div className="title">
-        <h1>2.COZY</h1>
-      </div>
-    </section>
+    <main>
+      <Nav />
+      <section className="intro">
+        <div className="content">
+          <div className="panels"></div>
+          <svg
+            className="bey-cutout"
+            width="100%"
+            viewBox="0 0 1999 1124"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              opacity="0.5"
+              d="M319.5 898.5L303 966V1124H1740.5V1031.5L1713.5 994L1653.5 976.5L1590 970.5L1226.5 976.5L1068 849H958L878 834.5H827.5L738.5 744L663 703L569 699L445.5 752L348 832L319.5 898.5Z"
+              fill="#D9D9D9"
+            />
+          </svg>
+        </div>
+        <div className="title">
+          <h1>2.COZY</h1>
+        </div>
+      </section>
+    </main>
   );
 };
 

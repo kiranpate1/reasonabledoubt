@@ -12,11 +12,13 @@ type Props = {
 const Nav = () => {
   const maxWidth = 17;
   const imageHeight = 200;
+  const targetArea = 48;
 
   useEffect(() => {
+    const navContainer = document.querySelector("nav") as HTMLElement;
     const scrollImages = document.getElementById("scrollImages") as HTMLElement;
     const images = document.querySelectorAll(
-      "#scrollImages > div"
+      "#scrollImages > a"
     ) as NodeListOf<HTMLElement>;
 
     let totalWidth = window.innerWidth;
@@ -33,6 +35,9 @@ const Nav = () => {
         const activeImg = images[maxWeightIndex].querySelector(
           "img"
         ) as HTMLElement;
+        const activeName = images[maxWeightIndex].querySelector(
+          "#name"
+        ) as HTMLElement;
         const width = widths[i];
         image.style.width = `${width}vw`;
         imageImg.style.filter = `saturate(0.2) brightness(${Math.pow(
@@ -40,45 +45,55 @@ const Nav = () => {
           0.75
         )})`;
         activeImg.style.filter = `saturate(1) brightness(1)`;
+        (image.querySelector("#name") as HTMLElement).style.opacity = "0";
+        activeName.style.opacity = "1";
 
         remainingWidth -= width;
       }
     }
 
-    scrollImages.addEventListener("mouseenter", () => {
+    navContainer.addEventListener("mouseenter", () => {
       isHovering = true;
-      for (let i = 0; i < projects.length; i++) {
-        const image = images[i] as HTMLElement;
-        image.style.transition = "width 0.3s ease";
-        image.addEventListener(
-          "transitionend",
-          () => {
-            image.style.transition = "0s";
-          },
-          { once: true }
-        );
-      }
+      // for (let i = 0; i < projects.length; i++) {
+      //   const image = images[i] as HTMLElement;
+      //   image.style.transition = "width 0.3s ease";
+      //   image.addEventListener(
+      //     "transitionend",
+      //     () => {
+      //       image.style.transition = "0s";
+      //     },
+      //     { once: true }
+      //   );
+      // }
+
+      navContainer.style.transform = `translateY(0px)`;
+      scrollImages.style.transform = `translateY(0px)`;
     });
-    scrollImages.addEventListener("mousemove", (event) => {
+    navContainer.addEventListener("mousemove", (event) => {
       if (!isHovering) return;
       const cursorPercentage = event.clientX / window.innerWidth;
 
-      animateImages(easeImageScroll(cursorPercentage));
+      animateImages(easeTiles(cursorPercentage));
     });
-    scrollImages.addEventListener("mouseleave", () => {
+    navContainer.addEventListener("mouseleave", () => {
       isHovering = false;
 
-      for (let i = 0; i < projects.length; i++) {
-        const image = images[i] as HTMLElement;
-        image.style.transition = "width 0.3s ease";
-        image.addEventListener(
-          "transitionend",
-          () => {
-            image.style.transition = "0s";
-          },
-          { once: true }
-        );
-      }
+      // for (let i = 0; i < projects.length; i++) {
+      //   const image = images[i] as HTMLElement;
+      //   image.style.transition = "width 0.3s ease";
+      //   image.addEventListener(
+      //     "transitionend",
+      //     () => {
+      //       image.style.transition = "0s";
+      //     },
+      //     { once: true }
+      //   );
+      // }
+
+      navContainer.style.transform = `translateY(${
+        imageHeight - targetArea
+      }px)`;
+      scrollImages.style.transform = `translateY(${targetArea}px)`;
     });
 
     function generateNumbers(percentage: number, maxWeight = maxWidth) {
@@ -120,19 +135,12 @@ const Nav = () => {
     }
 
     //easing
-    function easeImageScroll(t: number) {
-      const p0 = 0.25,
-        p1 = 0,
-        p2 = 0.75,
-        p3 = 1;
-      const u = 1 - t;
-      return 1 * u * u * t * p0 + 3 * u * t * t * p2 + t * t * t * p3;
-    }
-    function easeGeneric(t: number) {
+
+    function easeTiles(t: number) {
       t /= 0.5;
-      if (t < 1) return 0.5 * Math.pow(t, 5);
+      if (t < 1) return 0.5 * Math.pow(t, 3);
       t -= 2;
-      return 0.5 * (Math.pow(t, 5) + 2);
+      return 0.5 * (Math.pow(t, 3) + 2);
     }
 
     function easeInQuad(t: number) {
@@ -145,34 +153,49 @@ const Nav = () => {
   }, []);
 
   return (
-    <div
-      id="scrollImages"
-      className="fixed w-screen bottom-0 left-0 flex flex-row gap-[0px] pointer-events-auto origin-bottom overflow-hidden z-[100]"
+    <nav
+      className="fixed w-screen bottom-0 left-0 pointer-events-auto origin-bottom overflow-hidden z-[100] duration-300 ease-in-out"
+      style={{ transform: `translateY(${imageHeight - targetArea}px)` }}
     >
-      {projects.map((track, i) => (
-        <div
-          key={i}
-          className="relative overflow-hidden origin-left"
-          style={{
-            height: `${imageHeight}px`,
-            transform: "translate3d(0,0,0)",
-            transition: "background-color 0.6s ease",
-          }}
-        >
-          <Image
-            className="w-full object-cover h-full origin-top"
-            src={track.src}
-            width={imageHeight}
-            height={imageHeight}
-            alt={track.name}
+      <div className="absolute top-3 left-2 detail text-[12px] text-white mix-blend-difference">
+        Nav
+      </div>
+      <div
+        id="scrollImages"
+        className="flex flex-row gap-[0px] bg-black duration-300 ease-in-out"
+        style={{ transform: `translateY(${targetArea}px)` }}
+      >
+        {projects.map((track, i) => (
+          <a
+            key={i}
+            className="relative overflow-hidden origin-left cursor-pointer"
             style={{
-              transition: "opacity 0.6s ease",
+              height: `${imageHeight}px`,
               transform: "translate3d(0,0,0)",
+              transition: "background-color 0.6s ease",
             }}
-          />
-        </div>
-      ))}
-    </div>
+            href={track.name.toLowerCase().replace(/ /g, "-").replace(/'/g, "")}
+          >
+            <div className="detail h-6 w-full text-white whitespace-nowrap">
+              <div id="name" className="opacity-0 duration-300">
+                {i}. {track.name}
+              </div>
+            </div>
+            <Image
+              className="w-full object-cover h-full origin-top"
+              src={track.src}
+              width={imageHeight}
+              height={imageHeight}
+              alt={track.name}
+              style={{
+                transition: "opacity 0.6s ease",
+                transform: "translate3d(0,0,0)",
+              }}
+            />
+          </a>
+        ))}
+      </div>
+    </nav>
   );
 };
 

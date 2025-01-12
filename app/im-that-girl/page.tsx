@@ -6,6 +6,7 @@ import "./style.css";
 import { useEffect } from "react";
 import { text } from "stream/consumers";
 import { split } from "postcss/lib/list";
+import Nav from "../../components/Nav";
 
 declare global {
   interface Window {
@@ -379,6 +380,7 @@ const Cozy: React.FC = () => {
   }, []);
   return (
     <main>
+      <Nav />
       <div className="fixed top-0 left-0 w-screen h-screen flex flex-col justify-start items-stretch overflow-hidden text-white">
         <div
           id="textBg"

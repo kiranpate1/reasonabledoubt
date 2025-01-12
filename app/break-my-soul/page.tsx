@@ -4,6 +4,7 @@ import React, { use } from "react";
 import "../globals.css";
 import "./style.css";
 import { useEffect } from "react";
+import Nav from "../../components/Nav";
 
 declare global {
   interface Window {
@@ -232,6 +233,7 @@ const BreakMySoul: React.FC = () => {
   }, []);
   return (
     <main>
+      <Nav />
       <section className="intro">
         <div className="images">
           <div id="image-1">
