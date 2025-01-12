@@ -157,6 +157,33 @@ const Nav = () => {
       className="fixed w-screen bottom-0 left-0 pointer-events-auto origin-bottom overflow-hidden z-[100] duration-300 ease-in-out"
       style={{ transform: `translateY(${imageHeight - targetArea + 24}px)` }}
     >
+      <svg
+        className="absolute top-4 left-4"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M2 8H14"
+          stroke="white"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M2 4H14"
+          stroke="white"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M2 12H14"
+          stroke="white"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+        />
+      </svg>
       <div
         id="scrollImages"
         className="flex flex-row gap-[0px] bg-black duration-300 ease-in-out"
