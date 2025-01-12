@@ -8,7 +8,7 @@ import { i } from "motion/react-client";
 import { projects } from "./projects";
 
 export default function Home(props: "props") {
-  const maxWidth = 17;
+  const maxWidth = 20;
   const scrollHeight = 400;
   const imageHeight = 200;
 

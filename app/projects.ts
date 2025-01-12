@@ -23,8 +23,8 @@ export const projects = [
   },
   { name: "PURE/HONEY", src: "/images/home/20.png", color: "#67C8FB" },
   { name: "SUMMER RENAISSANCE", src: "/images/home/5.png", color: "#713735" },
-  { name: "SUNSHINE", src: "/images/home/6.png", color: "#000" },
-  { name: "BROKEN", src: "/images/home/7.png", color: "#E80000" },
-  { name: "FREAKY", src: "/images/home/19.png", color: "#F05F04" },
-  { name: "SWEET", src: "/images/home/15.png", color: "#F9D608" },
+  // { name: "SUNSHINE", src: "/images/home/6.png", color: "#000" },
+  // { name: "BROKEN", src: "/images/home/7.png", color: "#E80000" },
+  // { name: "FREAKY", src: "/images/home/19.png", color: "#F05F04" },
+  // { name: "SWEET", src: "/images/home/15.png", color: "#F9D608" },
 ];

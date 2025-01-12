@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Nav = () => {
-  const maxWidth = 17;
+  const maxWidth = 20;
   const imageHeight = 200;
   const targetArea = 48;
 
@@ -91,7 +91,7 @@ const Nav = () => {
       // }
 
       navContainer.style.transform = `translateY(${
-        imageHeight - targetArea
+        imageHeight - targetArea + 24
       }px)`;
       scrollImages.style.transform = `translateY(${targetArea}px)`;
     });
@@ -140,7 +140,7 @@ const Nav = () => {
       t /= 0.5;
       if (t < 1) return 0.5 * Math.pow(t, 3);
       t -= 2;
-      return 0.5 * (Math.pow(t, 3) + 2);
+      return 0.5 * (Math.pow(t, 3) + 1.98);
     }
 
     function easeInQuad(t: number) {
@@ -155,11 +155,8 @@ const Nav = () => {
   return (
     <nav
       className="fixed w-screen bottom-0 left-0 pointer-events-auto origin-bottom overflow-hidden z-[100] duration-300 ease-in-out"
-      style={{ transform: `translateY(${imageHeight - targetArea}px)` }}
+      style={{ transform: `translateY(${imageHeight - targetArea + 24}px)` }}
     >
-      <div className="absolute top-3 left-2 detail text-[12px] text-white mix-blend-difference">
-        Nav
-      </div>
       <div
         id="scrollImages"
         className="flex flex-row gap-[0px] bg-black duration-300 ease-in-out"
@@ -170,7 +167,6 @@ const Nav = () => {
             key={i}
             className="relative overflow-hidden origin-left cursor-pointer"
             style={{
-              height: `${imageHeight}px`,
               transform: "translate3d(0,0,0)",
               transition: "background-color 0.6s ease",
             }}
@@ -178,7 +174,7 @@ const Nav = () => {
           >
             <div className="detail h-6 w-full text-white whitespace-nowrap">
               <div id="name" className="opacity-0 duration-300">
-                {i}. {track.name}
+                {i + 1}. {track.name}
               </div>
             </div>
             <Image
@@ -188,6 +184,7 @@ const Nav = () => {
               height={imageHeight}
               alt={track.name}
               style={{
+                height: `${imageHeight}px`,
                 transition: "opacity 0.6s ease",
                 transform: "translate3d(0,0,0)",
               }}
