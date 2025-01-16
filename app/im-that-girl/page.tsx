@@ -20,6 +20,7 @@ const Cozy: React.FC = () => {
     const scrollItemsLines = document.querySelector(
       "#scrollItemsLines"
     ) as HTMLElement;
+    const openingP = document.querySelector("#openingP") as HTMLElement;
 
     setup();
     const container = document.querySelector("main") as HTMLElement;
@@ -74,6 +75,15 @@ const Cozy: React.FC = () => {
         }
         textBg.appendChild(h2);
       }
+
+      const openingPText = openingP.innerText;
+      openingP.innerHTML = "";
+      const openingPWords = openingPText.split(" ");
+      openingPWords.forEach((word) => {
+        const span = document.createElement("span");
+        span.innerText = word + " ";
+        openingP.appendChild(span);
+      });
 
       for (let i = 1; i < 8; i++) {
         const div = document.createElement("div") as HTMLElement;
@@ -132,6 +142,7 @@ const Cozy: React.FC = () => {
     function animateIntro() {
       section1();
       function section1() {
+        var scaleImage = document.querySelector("#scaleImage") as HTMLElement;
         var container = document.querySelector("#intro") as HTMLElement;
         var containerHeight = container.getBoundingClientRect().height;
         //const offset = window.innerHeight * 0.4;
@@ -141,11 +152,34 @@ const Cozy: React.FC = () => {
         const textBgs = document.querySelectorAll(
           "#textBg h2"
         ) as NodeListOf<HTMLElement>;
+        const openingPs = document.querySelectorAll(
+          "#openingP span"
+        ) as NodeListOf<HTMLElement>;
 
         if (path >= 0) {
+          scaleImage.style.height = "40vh";
         }
         if (path < 0 && path > -end) {
           var progress = path / -end;
+
+          if (progress < 0.2) {
+            scaleImage.style.height = `${40 - progress * 200}vh`;
+          } else if (progress > 0.2) {
+            scaleImage.style.height = `0vh`;
+          }
+
+          openingPs.forEach((item, i) => {
+            const ratio = Math.max(
+              0,
+              Math.min(
+                1,
+                (-path - (end * 0.2 * i) / textBgs.length) / (end * 0.5)
+              )
+            );
+            openingPs[openingPs.length - 1 - i].style.display =
+              ratio > 0.5 ? "inline" : "none";
+            openingPs[openingPs.length - 1 - i].style.opacity = `${ratio}`;
+          });
 
           textBgs.forEach((item, i) => {
             const textBgItem = textBgs[textBgs.length - 1 - i] as HTMLElement;
@@ -173,7 +207,7 @@ const Cozy: React.FC = () => {
               randomIndices.forEach((index, i) => {
                 const timeoutId = setTimeout(() => {
                   textBgItems[index].style.opacity = "0";
-                }, i * 100); // Adjust the delay as needed
+                }, i * 20); // Adjust the delay as needed
                 textBgItems[index].dataset.timeoutId = String(timeoutId);
               });
             } else if (i > 0 && adjRatio <= 0) {
@@ -191,14 +225,15 @@ const Cozy: React.FC = () => {
               });
               randomIndices.forEach((index, i) => {
                 const timeoutId = setTimeout(() => {
-                  textBgItems[index].style.opacity = "0.15";
-                }, i * 20); // Adjust the delay as needed
+                  textBgItems[index].style.opacity = "0.1";
+                }, i * 10); // Adjust the delay as needed
                 textBgItems[index].dataset.timeoutId = String(timeoutId);
               });
             }
           });
         }
         if (path <= -end) {
+          scaleImage.style.height = "0vh";
           textBgs.forEach((item) => {
             const textBgItems = item.querySelectorAll(
               "span"
@@ -387,12 +422,40 @@ const Cozy: React.FC = () => {
           className="h-screen w-screen flex flex-col justify-start items-center text-white"
         ></div>
       </div>
-      <section
-        id="intro"
-        className="h-[300vh] w-screen relative text-white"
-      ></section>
+      <section id="intro" className="h-[200vh] w-screen relative text-white">
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="sticky left-0 top-[30vh] mt-[70vh] mb-[10vh] w-full flex flex-col items-center gap-8 text-center min-h-[300px]">
+            <h1 className="">1. I'M THAT GIRL</h1>
+            <p
+              id="openingP"
+              className="sticky top-0 text-[rgba(255,255,255,0.8)] text-center max-w-[400px]"
+            >
+              I pull up in these clothes, look so good 'Cause I'm in that ho You
+              know all these songs sound good 'Cause I'm on that ho Deadass
+              Deadass I'm deadass. I pull up in these clothes, look so good
+              'Cause I'm in that ho You know all these songs sound good 'Cause
+              I'm on that ho Deadass Deadass I'm deadass
+            </p>
+          </div>
+        </div>
+        <div
+          id="scaleImage"
+          className="sticky left-[30vw] top-[30vh] w-[40vw] h-[40vh] flex overflow-hidden"
+        >
+          <img
+            src="/images/im-that-girl/stare.webp"
+            alt=""
+            className="min-h-[40vh] flex-1 object-cover"
+          />
+          <img
+            src="/images/im-that-girl/pose.webp"
+            alt=""
+            className="min-h-[40vh] flex-1 object-cover"
+          />
+        </div>
+      </section>
       <section id="scroll-section" className="h-[400vh]">
-        <div className="selectors sticky top-4 left-0 flex gap-0 items-start w-max mx-auto"></div>
+        <div className="selectors sticky top-4 left-0 flex gap-0 items-start w-max mx-auto mb-4"></div>
         <div
           id="scroll-container"
           className="sticky top-0 left-0 w-screen h-screen overflow-hidden"

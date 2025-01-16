@@ -67,7 +67,9 @@ const Nav = () => {
       // }
 
       navContainer.style.transform = `translateY(0px)`;
+      navContainer.style.transitionDelay = "0.1s";
       scrollImages.style.transform = `translateY(0px)`;
+      scrollImages.style.transitionDelay = "0.1s";
     });
     navContainer.addEventListener("mousemove", (event) => {
       if (!isHovering) return;
@@ -93,7 +95,9 @@ const Nav = () => {
       navContainer.style.transform = `translateY(${
         imageHeight - targetArea + 24
       }px)`;
+      navContainer.style.transitionDelay = "0s";
       scrollImages.style.transform = `translateY(${targetArea}px)`;
+      scrollImages.style.transitionDelay = "0s";
     });
 
     function generateNumbers(percentage: number, maxWeight = maxWidth) {

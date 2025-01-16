@@ -2,6 +2,11 @@
   --border-color: #494949;
 }
 
+.scroll-items {
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
 .scroll-items > div {
   flex: 0 0 auto;
   width: 600px;
@@ -76,7 +81,7 @@
 }
 
 #textBg span {
-  opacity: 0.15;
+  opacity: 0.1;
 }
 
 /* h1 {
