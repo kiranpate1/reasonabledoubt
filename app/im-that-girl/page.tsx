@@ -440,17 +440,18 @@ const Cozy: React.FC = () => {
         </div>
         <div
           id="scaleImage"
-          className="sticky left-[30vw] top-[30vh] w-[40vw] h-[40vh] flex overflow-hidden"
+          className="sticky left-[30vw] top-[30vh] w-[40vw] h-[40vh] grid overflow-hidden"
+          style={{ gridTemplateColumns: "1fr 1fr" }}
         >
           <img
             src="/images/im-that-girl/stare.webp"
             alt=""
-            className="min-h-[40vh] flex-1 object-cover"
+            className="h-[40vh] w-full object-cover"
           />
           <img
             src="/images/im-that-girl/pose.webp"
             alt=""
-            className="min-h-[40vh] flex-1 object-cover"
+            className="h-[40vh] w-full object-cover"
           />
         </div>
       </section>
