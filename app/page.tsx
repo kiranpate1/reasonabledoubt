@@ -191,43 +191,6 @@ export default function Home(props: "props") {
       }
     }
 
-    // scrollImages.addEventListener("mouseenter", () => {
-    //   isHovering = true;
-    //   for (let i = 0; i < projects.length; i++) {
-    //     const image = images[i] as HTMLElement;
-    //     image.style.transition = "width 0.3s ease";
-    //     image.addEventListener(
-    //       "transitionend",
-    //       () => {
-    //         image.style.transition = "0s";
-    //       },
-    //       { once: true }
-    //     );
-    //   }
-    // });
-    // scrollImages.addEventListener("mousemove", (event) => {
-    //   if (!isHovering) return;
-    //   const cursorPercentage = event.clientX / window.innerWidth;
-
-    //   animateImages(easeImageScroll(cursorPercentage));
-    // });
-    // scrollImages.addEventListener("mouseleave", () => {
-    //   isHovering = false;
-
-    //   for (let i = 0; i < projects.length; i++) {
-    //     const image = images[i] as HTMLElement;
-    //     image.style.transition = "width 0.3s ease";
-    //     image.addEventListener(
-    //       "transitionend",
-    //       () => {
-    //         image.style.transition = "0s";
-    //       },
-    //       { once: true }
-    //     );
-    //   }
-    //   handleScroll();
-    // });
-
     function generateNumbers(percentage: number, maxWeight = maxWidth) {
       const totalSum = 100; // The target total sum
       const numberOfElements = projects.length; // Total elements in the array
@@ -363,6 +326,7 @@ export default function Home(props: "props") {
               <div
                 id="scrollImages"
                 className="absolute w-screen bottom-0 left-0 flex flex-row gap-[0px] pointer-events-auto origin-bottom overflow-hidden"
+                style={{ transform: `translateY(${imageHeight}px)` }}
               >
                 {projects.map((track, i) => (
                   <div
