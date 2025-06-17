@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useEffect } from "react";
 import Cd from "../components/Cd";
 import LoadingBar from "../components/LoadingBar";
-import { i } from "motion/react-client";
 import { projects } from "./projects";
 
 export default function Home(props: "props") {
