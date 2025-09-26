@@ -5,6 +5,7 @@ import "../globals.css";
 import "./style.css";
 import { useEffect } from "react";
 import Nav from "../../components/Nav";
+import Footer from "../../components/Footer";
 
 declare global {
   interface Window {
@@ -264,6 +265,7 @@ const BreakMySoul: React.FC = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 };

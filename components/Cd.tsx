@@ -1,19 +1,5 @@
-import React, {
-  MutableRefObject,
-  useRef,
-  useState,
-  useEffect,
-  useLayoutEffect,
-  use,
-} from "react";
-import {
-  motion,
-  motionValue,
-  animate,
-  useSpring,
-  useTransform,
-  useMotionValue,
-} from "framer-motion";
+import React, { useRef, useState } from "react";
+import { motion, motionValue, useTransform } from "framer-motion";
 
 type props = {
   size: number;

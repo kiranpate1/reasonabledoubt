@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect } from "react";
-import Cd from "../components/Cd";
 import LoadingBar from "../components/LoadingBar";
 import Footer from "../components/Footer";
 import { projects } from "./projects";
@@ -262,7 +261,7 @@ export default function Home(props: "props") {
   }, []);
 
   return (
-    <main className="w-screen flex flex-col row-start-2 items-center sm:items-start text-[#fff]">
+    <main className="w-screen flex flex-col row-start-2 items-center sm:items-start text-white">
       <section className="relative w-full h-screen">
         <h1>Renaissance is an album by recording artist Beyoncé</h1>
       </section>

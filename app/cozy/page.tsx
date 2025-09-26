@@ -5,6 +5,7 @@ import "../globals.css";
 import "./style.css";
 import { useEffect } from "react";
 import Nav from "../../components/Nav";
+import Footer from "../../components/Footer";
 
 declare global {
   interface Window {
@@ -250,6 +251,7 @@ const Cozy: React.FC = () => {
           <h1>2.COZY</h1>
         </div>
       </section>
+      <Footer />
     </main>
   );
 };

@@ -4,9 +4,8 @@ import React, { use } from "react";
 import "../globals.css";
 import "./style.css";
 import { useEffect } from "react";
-import { text } from "stream/consumers";
-import { split } from "postcss/lib/list";
 import Nav from "../../components/Nav";
+import Footer from "../../components/Footer";
 
 declare global {
   interface Window {
@@ -486,6 +485,7 @@ const Cozy: React.FC = () => {
         id="outro"
         className="h-[300vh] w-screen relative text-white"
       ></section>
+      <Footer />
     </main>
   );
 };

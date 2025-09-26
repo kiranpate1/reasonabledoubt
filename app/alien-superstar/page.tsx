@@ -5,6 +5,7 @@ import "../globals.css";
 import "./style.css";
 import { useEffect } from "react";
 import Nav from "../../components/Nav";
+import Footer from "../../components/Footer";
 
 declare global {
   interface Window {
@@ -75,6 +76,7 @@ const AlienSuperstar: React.FC = () => {
           p1(progress);
 
           labels.forEach((label, i) => {
+            console.log("test");
             const ratio = Math.max(
               0,
               Math.min(
@@ -369,6 +371,7 @@ const AlienSuperstar: React.FC = () => {
         />
         <div className="unique">UNIQUE</div>
       </section>
+      <Footer />
     </main>
   );
 };

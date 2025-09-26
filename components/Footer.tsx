@@ -5,26 +5,38 @@ type Props = {};
 
 const Footer = (props: Props) => {
   useEffect(() => {
-    const footerLinks = document.getElementById("footerLinks") as HTMLElement;
+    const footerLinks = document.getElementById(
+      "footerLinks"
+    ) as HTMLElement | null;
     const brighten = document.querySelectorAll(
       ".brighten"
     ) as NodeListOf<HTMLElement>;
 
-    footerLinks.addEventListener("mouseenter", () => {
-      for (let i = 0; i < brighten.length; i++) {
-        brighten[i].style.filter = "brightness(1.8)";
-      }
-    });
+    if (footerLinks) {
+      const handleMouseEnter = () => {
+        for (let i = 0; i < brighten.length; i++) {
+          brighten[i].style.filter = "brightness(1.8)";
+        }
+      };
 
-    footerLinks.addEventListener("mouseleave", () => {
-      for (let i = 0; i < brighten.length; i++) {
-        brighten[i].style.filter = "brightness(1)";
-      }
-    });
+      const handleMouseLeave = () => {
+        for (let i = 0; i < brighten.length; i++) {
+          brighten[i].style.filter = "brightness(1)";
+        }
+      };
+
+      footerLinks.addEventListener("mouseenter", handleMouseEnter);
+      footerLinks.addEventListener("mouseleave", handleMouseLeave);
+
+      return () => {
+        footerLinks.removeEventListener("mouseenter", handleMouseEnter);
+        footerLinks.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    }
   }, []);
 
   return (
-    <section className="relative w-full h-screen">
+    <section className="relative w-full h-screen text-white">
       <h1>Renaissance</h1>
       <div className="absolute top-0 left-0 w-screen h-screen overflow-hidden">
         <Cd size={500} />
