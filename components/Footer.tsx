@@ -37,7 +37,7 @@ const Footer = (props: Props) => {
 
   return (
     <section className="relative w-full h-screen text-white">
-      <h1>Renaissance</h1>
+      {/* <h1>Renaissance</h1> */}
       <div className="absolute top-0 left-0 w-screen h-screen overflow-hidden">
         <Cd size={500} />
       </div>

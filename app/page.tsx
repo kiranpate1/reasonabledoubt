@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
+import { use, useEffect, useRef } from "react";
 import LoadingBar from "../components/LoadingBar";
 import Footer from "../components/Footer";
 import { projects } from "./projects";
@@ -10,8 +10,47 @@ export default function Home(props: "props") {
   const maxWidth = 20;
   const scrollHeight = 400;
   const imageHeight = 200;
+  const typingRef = useRef<HTMLDivElement>(null);
+  const pronuniciationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (typingRef.current) {
+      const typingPs = typingRef.current.querySelectorAll(
+        "p"
+      ) as NodeListOf<HTMLElement>;
+      typingPs.forEach((p) => {
+        const fullText = p.innerText;
+        p.style.display = "flex";
+        p.style.flexWrap = "wrap";
+        p.innerText = "";
+        const words = fullText.split(" ");
+        words.forEach((word, index) => {
+          const span = document.createElement("span");
+          const letters = word.split("");
+          letters.forEach((letter, letterIndex) => {
+            const letterSpan = document.createElement("span");
+            letterSpan.style.opacity = "0";
+            letterSpan.innerText =
+              letter +
+              (letterIndex < letters.length - 1
+                ? ""
+                : String.fromCharCode(160));
+            span.appendChild(letterSpan);
+          });
+          p.appendChild(span);
+        });
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const scrollTitle = document.querySelector(
+      ".scroll-element"
+    ) as HTMLElement;
+    const syllables = document.querySelectorAll(
+      ".syllable"
+    ) as NodeListOf<HTMLElement>;
+    const syllableWidth = syllables[0].getBoundingClientRect().width;
     const scrollImages = document.getElementById("scrollImages") as HTMLElement;
     const images = document.querySelectorAll(
       "#scrollImages > div"
@@ -58,6 +97,34 @@ export default function Home(props: "props") {
       if (isHovering) return;
 
       const scrollTrack = document.getElementById("scrollTrack") as HTMLElement;
+
+      if (
+        window.scrollY > window.innerHeight * 0.5 &&
+        window.scrollY <= window.innerHeight
+      ) {
+        for (let i = 0; i < syllables.length; i++) {
+          syllables[i].style.width = `${syllableWidth}px`;
+        }
+        //type text out
+
+        if (typingRef.current) {
+          const typingSpans = typingRef.current.querySelectorAll(
+            "span span"
+          ) as NodeListOf<HTMLElement>;
+          typingSpans.forEach((span, index) => {
+            const el = span as HTMLElement;
+            el.style.transition = `opacity 0s ${index * 0.01}s`;
+            el.style.opacity = "1";
+          });
+        }
+      } else if (
+        window.scrollY <= window.innerHeight * 0.5 ||
+        window.scrollY > window.innerHeight
+      ) {
+        for (let i = 0; i < syllables.length; i++) {
+          syllables[i].style.width = "0px";
+        }
+      }
 
       //section-1
       if (window.scrollY < scrollTrack.offsetTop) {
@@ -262,14 +329,71 @@ export default function Home(props: "props") {
 
   return (
     <main className="w-screen flex flex-col row-start-2 items-center sm:items-start text-white">
-      <section className="relative w-full h-screen">
-        <h1>Renaissance is an album by recording artist Beyoncé</h1>
+      <div
+        className="fixed top-0 left-0 z-0 flex justify-stretch gap-0"
+        id="scrollTitle"
+      >
+        <h1>Ren</h1>
+        <h1 className="syllable overflow-hidden duration-200 ease-in-out">·</h1>
+        <h1>ais</h1>
+        <h1 className="syllable overflow-hidden duration-200 ease-in-out">·</h1>
+        <h1>sance</h1>
+      </div>
+      <section className="flex justify-stretch relative w-full h-screen">
+        <div className="h-full flex-1">
+          <h1>
+            <span className="text-[rgba(255,255,255,0)]">Renaissance</span> is
+            an album by recording artist Beyoncé
+          </h1>
+        </div>
+        <div className="h-full w-[20vw]"></div>
       </section>
       <section
         id="scrollTrack"
-        className="relative w-screen"
+        className="relative w-screen z-1"
         style={{ height: `${scrollHeight}vh` }}
       >
+        <div className="absolute top-0 left-0 right-0 flex flex-col items-start pl-12">
+          <div className="w-full max-w-96 flex flex-col gap-4" ref={typingRef}>
+            <div className="flex flex-row gap-2 items-center">
+              <p>noun</p>
+              <div
+                className="px-2 py-1 border border-white/40 rounded-full text-[10px] flex flex-row gap-1 items-center"
+                ref={pronuniciationRef}
+              >
+                <p>ˈre-nə-ˌsän(t)s</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="13"
+                  viewBox="0 0 15 13"
+                  fill="none"
+                  data-inject-url="https://www.merriam-webster.com/dist-cross-dungarees/2025-09-25--21-30-28-njg60i/images/svg/audio-pron-redesign.svg"
+                >
+                  <title>How to pronounce renaissance (audio)</title>
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M13.513 6.34363C13.513 4.21463 12.623 2.33405 10.7864 0.687267L11.4026 0C13.406 1.79629 14.436 3.91633 14.436 6.34363C14.436 8.77387 13.3787 10.9297 11.3318 12.7981L10.7095 12.1163C12.6005 10.3902 13.513 8.4697 13.513 6.34363ZM10.8305 6.33811C10.8305 5.19038 10.2301 3.91597 8.89573 2.50719L9.5659 1.87241C10.9804 3.36579 11.7536 4.85692 11.7536 6.33811C11.7536 8.50095 10.6077 9.83479 9.56034 10.9028L8.90129 10.2565C9.91606 9.22174 10.8305 8.11681 10.8305 6.33811ZM0 8.6107V4.0387H3.23077L6.46154 1.75408V10.959L3.11169 8.6107H0Z"
+                    fill="white"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <p className="body-large">
+              the revival of art and literature under the influence of classical
+              models in the 14th–16th centuries.
+            </p>
+            <p>
+              the culture and style of art and architecture developed during the
+              Renaissance. noun: Renaissance
+            </p>
+            <p>
+              a revival of or renewed interest in something. noun: renaissance;
+              plural noun: renaissances
+            </p>
+          </div>
+        </div>
         <div className="relative pointer-events-none flex h-0 w-screen items-start z-[12]">
           <div className="relative w-screen h-[200vh] top-[-100vh]">
             <div className="sticky top-0 w-screen min-h-screen flex items-start">
@@ -339,7 +463,7 @@ export default function Home(props: "props") {
         </div>
         <div
           id="scrollLines"
-          className="absolute w-screen h-full left-0 flex flex-row gap-[0px]"
+          className="absolute w-screen h-full left-0 flex flex-row gap-[0px] bg-black"
           style={{
             bottom: `${imageHeight}px`,
             height: `${scrollHeight - 100}vh`,
