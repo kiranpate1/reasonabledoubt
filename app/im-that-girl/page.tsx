@@ -3,7 +3,7 @@
 import React, { use } from "react";
 import "../globals.css";
 import "./style.css";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 
@@ -14,8 +14,39 @@ declare global {
 }
 
 const Cozy: React.FC = () => {
+  const [activeOutfit, setActiveOutfit] = useState<number>(0);
+
+  const outfits = [
+    {
+      brand: "Marni",
+      image: "/images/im-that-girl/1.webp",
+    },
+    {
+      brand: "DUNDAS",
+      image: "/images/im-that-girl/2.webp",
+    },
+    {
+      brand: "Mugler",
+      image: "/images/im-that-girl/3.webp",
+    },
+    {
+      brand: "Alexander McQueen",
+      image: "/images/im-that-girl/4.webp",
+    },
+    {
+      brand: "Gareth Pugh",
+      image: "/images/im-that-girl/5.webp",
+    },
+    {
+      brand: "Situationist x Yaspis",
+      image: "/images/im-that-girl/6.webp",
+    },
+    {
+      brand: "BOSS",
+      image: "/images/im-that-girl/7.webp",
+    },
+  ];
   useEffect(() => {
-    const scrollItems = document.querySelector("#scrollItems") as HTMLElement;
     const scrollItemsLines = document.querySelector(
       "#scrollItemsLines"
     ) as HTMLElement;
@@ -30,13 +61,7 @@ const Cozy: React.FC = () => {
     const containerItemsLines = document.querySelectorAll(
       "#scrollItemsLines > div"
     ) as NodeListOf<HTMLElement>;
-    const selectors = document.querySelector(".selectors") as HTMLElement;
 
-    containerItems.forEach((item, i) => {
-      const selector = document.createElement("div") as HTMLElement;
-      selector.classList.add("selector");
-      selectors.appendChild(selector);
-    });
     const selectorsAll = document.querySelectorAll(
       ".selector"
     ) as NodeListOf<HTMLElement>;
@@ -83,37 +108,6 @@ const Cozy: React.FC = () => {
         span.innerText = word + " ";
         openingP.appendChild(span);
       });
-
-      for (let i = 1; i < 8; i++) {
-        const div = document.createElement("div") as HTMLElement;
-        const transform = document.createElement("div") as HTMLElement;
-        transform.classList.add("transform");
-        const img = document.createElement("img") as HTMLImageElement;
-        img.src = `/images/im-that-girl/${i}.webp`;
-        transform.appendChild(img);
-        div.appendChild(transform);
-        scrollItems.appendChild(div);
-      }
-
-      for (let i = 1; i < 8; i++) {
-        const div = document.createElement("div") as HTMLElement;
-        const transform = document.createElement("div") as HTMLElement;
-        transform.classList.add("transform");
-        const lineLeft = document.createElement("div") as HTMLElement;
-        lineLeft.classList.add("line-left");
-        const lineRight = document.createElement("div") as HTMLElement;
-        lineRight.classList.add("line-right");
-        const lineTop = document.createElement("div") as HTMLElement;
-        lineTop.classList.add("line-top");
-        const lineBottom = document.createElement("div") as HTMLElement;
-        lineBottom.classList.add("line-bottom");
-        transform.appendChild(lineLeft);
-        transform.appendChild(lineRight);
-        transform.appendChild(lineTop);
-        transform.appendChild(lineBottom);
-        div.appendChild(transform);
-        scrollItemsLines.appendChild(div);
-      }
     }
 
     //animate
@@ -224,7 +218,7 @@ const Cozy: React.FC = () => {
               });
               randomIndices.forEach((index, i) => {
                 const timeoutId = setTimeout(() => {
-                  textBgItems[index].style.opacity = "0.1";
+                  textBgItems[index].style.opacity = "1";
                 }, i * 10); // Adjust the delay as needed
                 textBgItems[index].dataset.timeoutId = String(timeoutId);
               });
@@ -332,6 +326,7 @@ const Cozy: React.FC = () => {
           }
           //inside
           if (scrollProgress > start && scrollProgress < end) {
+            setActiveOutfit(i);
             const toTransform = [transformElm, transformLinesElm];
 
             toTransform.forEach((elm) => {
@@ -390,6 +385,45 @@ const Cozy: React.FC = () => {
           }
         });
       }
+
+      section3();
+      function section3() {
+        const outro = document.querySelector("#outro") as HTMLElement;
+        const outroHeight = outro.getBoundingClientRect().height;
+        const scrollTop = window.scrollY;
+        const scrollStart = outro.offsetTop;
+        const scrollEnd = scrollStart + outroHeight - window.innerHeight;
+        const scrollProgress = Math.max(
+          0,
+          Math.min((scrollTop - scrollStart) / (scrollEnd - scrollStart), 1)
+        );
+
+        const topWindow = document.querySelector(".window.top") as HTMLElement;
+        const bottomWindow = document.querySelector(
+          ".window.bottom"
+        ) as HTMLElement;
+        const topFilter = document.querySelector(".top .filter") as HTMLElement;
+        const bottomFilter = document.querySelector(
+          ".bottom .filter"
+        ) as HTMLElement;
+        const shades = document.querySelectorAll(
+          ".shade"
+        ) as NodeListOf<HTMLElement>;
+
+        const topHeight = 100 - scrollProgress * 100;
+        const bottomHeight = scrollProgress * 100;
+
+        topWindow.style.height = `calc(${topHeight}%`;
+        bottomWindow.style.height = `calc(${bottomHeight}%`;
+        shades[0].style.opacity = `${scrollProgress}`;
+        topFilter.style.opacity = `${scrollProgress}`;
+        topFilter.style.filter = `blur(20px) brightness(${1 + scrollProgress})`;
+        shades[1].style.opacity = `${1 - scrollProgress}`;
+        bottomFilter.style.opacity = `${1 - scrollProgress}`;
+        bottomFilter.style.filter = `blur(20px) brightness(${
+          2 - scrollProgress
+        })`;
+      }
     }
 
     //easing
@@ -418,7 +452,7 @@ const Cozy: React.FC = () => {
       <div className="fixed top-0 left-0 w-screen h-screen flex flex-col justify-start items-stretch overflow-hidden text-white">
         <div
           id="textBg"
-          className="h-screen w-screen flex flex-col justify-start items-center text-white"
+          className="h-screen w-screen flex flex-col justify-start items-center text-white opacity-20"
         ></div>
       </div>
       <section id="intro" className="h-[200vh] w-screen relative text-white">
@@ -455,7 +489,21 @@ const Cozy: React.FC = () => {
         </div>
       </section>
       <section id="scroll-section" className="h-[400vh]">
-        <div className="selectors sticky top-4 left-0 flex gap-0 items-start w-max mx-auto mb-4"></div>
+        <div className="sticky top-0 h-0">
+          <div className="py-4 flex flex-col items-center justify-between h-screen">
+            <div className="selectors flex gap-0 items-start w-max mx-auto mb-4 border-[0.5px] border-[#787878]">
+              {outfits.map((outfit, i) => (
+                <div
+                  key={i}
+                  className="selector w-1.5 h-1.5 border-[0.5px] border-[#787878] bg-black"
+                ></div>
+              ))}
+            </div>
+            <div className="detail text-center text-white">
+              {outfits[activeOutfit]?.brand.toUpperCase()}
+            </div>
+          </div>
+        </div>
         <div
           id="scroll-container"
           className="sticky top-0 left-0 w-screen h-screen overflow-hidden"
@@ -463,7 +511,18 @@ const Cozy: React.FC = () => {
           <div
             id="scrollItemsLines"
             className="scroll-items absolute h-full flex items-center py-0 px-[100vw] overflow-hidden"
-          ></div>
+          >
+            {outfits.map((outfit, i) => (
+              <div key={i} className="relative">
+                <div className="transform">
+                  <div className="line-left"></div>
+                  <div className="line-right"></div>
+                  <div className="line-top"></div>
+                  <div className="line-bottom"></div>
+                </div>
+              </div>
+            ))}
+          </div>
           <div
             id="scrollItems"
             className="scroll-items absolute h-full flex items-center py-0 px-[100vw]"
@@ -478,13 +537,69 @@ const Cozy: React.FC = () => {
               <br />
               pearls.
             </h1>
+            {outfits.map((outfit, i) => (
+              <div key={i} className="relative">
+                <div className="transform">
+                  <img
+                    src={outfit.image}
+                    alt={outfit.brand}
+                    className="h-[80vh] w-auto object-contain"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
       <section
         id="outro"
-        className="h-[300vh] w-screen relative text-white"
-      ></section>
+        className="relative h-[200vh] w-screen text-white bg-black"
+      >
+        <div className="scroll-window sticky top-0 w-full h-[100vh] overflow-hidden flex flex-col items-stretch justify-center">
+          <div className="relative w-full bg-[#E30404] h-[7vw]">
+            <div className="shade absolute inset-0 bg-black"></div>
+            <h1 className="relative">Test 1</h1>
+          </div>
+          <div className="relative flex-1 w-full">
+            <div className="window top absolute flex flex-col items-stretch w-full overflow-hidden top-0 justify-start h-full">
+              <img
+                className="absolute w-full min-h-screen max-h-screen object-cover top-0"
+                src="/images/im-that-girl/first.jpg"
+              />
+              <img
+                className="filter absolute flex flex-col items-stretch w-full overflow-hidden top-0 justify-start h-full min-h-screen max-h-screen object-cover saturate-[4] mix-blend-color-dodge blur-lg opacity-0"
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, black 0%, transparent 100%)",
+                  maskImage:
+                    "linear-gradient(to bottom, black 0%, transparent 100%)",
+                }}
+                src="/images/im-that-girl/first.jpg"
+              />
+            </div>
+            <div className="window bottom absolute flex flex-col items-stretch w-full overflow-hidden bottom-0 justify-end h-0">
+              <img
+                className="absolute w-full min-h-[calc(100vh-14vw)] max-h-[calc(100vh-14vw)] object-cover bottom-0"
+                src="/images/im-that-girl/second.jpg"
+              />
+              <img
+                className="filter absolute flex flex-col items-stretch w-full overflow-hidden bottom-0 justify-end h-0 min-h-[calc(100vh-14vw)] max-h-[calc(100vh-14vw)] object-cover saturate-[4] mix-blend-color-dodge blur-lg opacity-100"
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(to top, black 0%, transparent 100%)",
+                  maskImage:
+                    "linear-gradient(to top, black 0%, transparent 100%)",
+                }}
+                src="/images/im-that-girl/second.jpg"
+              />
+            </div>
+          </div>
+          <div className="relative w-full bg-[#0EAA51] h-[7vw]">
+            <div className="shade absolute inset-0 bg-black"></div>
+            <h1 className="relative">Test 1</h1>
+          </div>
+        </div>
+      </section>
       <Footer />
     </main>
   );

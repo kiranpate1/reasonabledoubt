@@ -69,19 +69,8 @@
   transform: translate3d(0, 0, 0);
 }
 
-.selectors {
-  border: 0.5px solid #787878;
-}
-
-.selector {
-  width: 6px;
-  height: 6px;
-  border: 0.5px solid #787878;
-  background: black;
-}
-
 #textBg span {
-  opacity: 0.1;
+  opacity: 1;
 }
 
 /* h1 {

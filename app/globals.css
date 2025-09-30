@@ -11,6 +11,11 @@ p {
   padding: 0;
 }
 
+::selection {
+  background: #fff;
+  color: #000;
+}
+
 @font-face {
   font-family: "Roboto Mono";
   src: url("./fonts/RobotoMono-VariableFont_wght.ttf") format("truetype");

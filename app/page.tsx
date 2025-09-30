@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { use, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import LoadingBar from "../components/LoadingBar";
 import Footer from "../components/Footer";
 import { projects } from "./projects";
@@ -12,6 +12,7 @@ export default function Home(props: "props") {
   const imageHeight = 200;
   const typingRef = useRef<HTMLDivElement>(null);
   const pronuniciationRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   useEffect(() => {
     if (typingRef.current) {
@@ -44,9 +45,6 @@ export default function Home(props: "props") {
   }, []);
 
   useEffect(() => {
-    const scrollTitle = document.querySelector(
-      ".scroll-element"
-    ) as HTMLElement;
     const syllables = document.querySelectorAll(
       ".syllable"
     ) as NodeListOf<HTMLElement>;
@@ -99,15 +97,16 @@ export default function Home(props: "props") {
       const scrollTrack = document.getElementById("scrollTrack") as HTMLElement;
 
       if (
-        window.scrollY > window.innerHeight * 0.5 &&
-        window.scrollY <= window.innerHeight
+        window.scrollY > window.innerWidth * 0.2 &&
+        window.scrollY <= window.innerHeight * 2
       ) {
         for (let i = 0; i < syllables.length; i++) {
           syllables[i].style.width = `${syllableWidth}px`;
         }
         //type text out
 
-        if (typingRef.current) {
+        if (typingRef.current && pronuniciationRef.current) {
+          pronuniciationRef.current.style.opacity = "1";
           const typingSpans = typingRef.current.querySelectorAll(
             "span span"
           ) as NodeListOf<HTMLElement>;
@@ -118,8 +117,8 @@ export default function Home(props: "props") {
           });
         }
       } else if (
-        window.scrollY <= window.innerHeight * 0.5 ||
-        window.scrollY > window.innerHeight
+        window.scrollY <= window.innerWidth * 0.2 ||
+        window.scrollY > window.innerHeight * 2
       ) {
         for (let i = 0; i < syllables.length; i++) {
           syllables[i].style.width = "0px";
@@ -232,6 +231,7 @@ export default function Home(props: "props") {
       const maxWeightIndex = generateNumbers(input).maxWeightIndex;
 
       for (let i = 0; i < projects.length; i++) {
+        setActiveIndex(maxWeightIndex);
         const image = images[i] as HTMLElement;
         const imageImg = image.querySelector("img") as HTMLElement;
         const activeImg = images[maxWeightIndex].querySelector(
@@ -239,7 +239,7 @@ export default function Home(props: "props") {
         ) as HTMLElement;
         const activeArrow = arrows[maxWeightIndex] as HTMLElement;
         const scrollLine = lines[i] as HTMLElement;
-        const activeScrollLine = lines[maxWeightIndex] as HTMLElement;
+        // const activeScrollLine = lines[maxWeightIndex] as HTMLElement;
         const width = widths[i];
         image.style.width = `${width}vw`;
         imageImg.style.filter = `saturate(0.2) brightness(${Math.pow(
@@ -348,17 +348,13 @@ export default function Home(props: "props") {
         </div>
         <div className="h-full w-[20vw]"></div>
       </section>
-      <section
-        id="scrollTrack"
-        className="relative w-screen z-1"
-        style={{ height: `${scrollHeight}vh` }}
-      >
-        <div className="absolute top-0 left-0 right-0 flex flex-col items-start pl-12">
+      <section className="w-screen h-[80vh] absolute top-[30vw] left-0">
+        <div className="sticky top-[10vw] left-0 right-0 flex flex-col items-start pl-12 h-0">
           <div className="w-full max-w-96 flex flex-col gap-4" ref={typingRef}>
             <div className="flex flex-row gap-2 items-center">
               <p>noun</p>
               <div
-                className="px-2 py-1 border border-white/40 rounded-full text-[10px] flex flex-row gap-1 items-center"
+                className="px-2 py-1 border border-white/40 rounded-full text-[10px] flex flex-row gap-1 items-center hover:bg-white/10 cursor-pointer opacity-0"
                 ref={pronuniciationRef}
               >
                 <p>ˈre-nə-ˌsän(t)s</p>
@@ -375,7 +371,7 @@ export default function Home(props: "props") {
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M13.513 6.34363C13.513 4.21463 12.623 2.33405 10.7864 0.687267L11.4026 0C13.406 1.79629 14.436 3.91633 14.436 6.34363C14.436 8.77387 13.3787 10.9297 11.3318 12.7981L10.7095 12.1163C12.6005 10.3902 13.513 8.4697 13.513 6.34363ZM10.8305 6.33811C10.8305 5.19038 10.2301 3.91597 8.89573 2.50719L9.5659 1.87241C10.9804 3.36579 11.7536 4.85692 11.7536 6.33811C11.7536 8.50095 10.6077 9.83479 9.56034 10.9028L8.90129 10.2565C9.91606 9.22174 10.8305 8.11681 10.8305 6.33811ZM0 8.6107V4.0387H3.23077L6.46154 1.75408V10.959L3.11169 8.6107H0Z"
-                    fill="white"
+                    fill="currentColor"
                   ></path>
                 </svg>
               </div>
@@ -394,14 +390,24 @@ export default function Home(props: "props") {
             </p>
           </div>
         </div>
+      </section>
+      <section
+        id="scrollTrack"
+        className="relative w-screen z-1"
+        style={{ height: `${scrollHeight}vh` }}
+      >
         <div className="relative pointer-events-none flex h-0 w-screen items-start z-[12]">
           <div className="relative w-screen h-[200vh] top-[-100vh]">
             <div className="sticky top-0 w-screen min-h-screen flex items-start">
               <div
-                className="absolute bottom-0 left-0 pointer-events-auto"
+                className="absolute bottom-0 left-0 pointer-events-auto bg-black"
                 id="status-1"
               >
-                <LoadingBar status="Error 404" message="Retrieving songs..." />
+                <LoadingBar
+                  status="Error 404"
+                  message="Retrieving songs..."
+                  activeIndex={activeIndex}
+                />
               </div>
             </div>
           </div>
@@ -420,7 +426,11 @@ export default function Home(props: "props") {
             }}
             id="status-2"
           >
-            <LoadingBar status="Success!!" message="Found 16 songs." />
+            <LoadingBar
+              status="Success!!"
+              message="Found 16 songs."
+              activeIndex={activeIndex}
+            />
           </div>
         </div>
         <div className="relative z-10 pointer-events-none flex h-0 w-screen items-start">
