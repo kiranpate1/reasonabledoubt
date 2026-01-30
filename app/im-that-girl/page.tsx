@@ -48,7 +48,7 @@ const Cozy: React.FC = () => {
   ];
   useEffect(() => {
     const scrollItemsLines = document.querySelector(
-      "#scrollItemsLines"
+      "#scrollItemsLines",
     ) as HTMLElement;
     const openingP = document.querySelector("#openingP") as HTMLElement;
 
@@ -56,14 +56,14 @@ const Cozy: React.FC = () => {
     const container = document.querySelector("main") as HTMLElement;
     let containerHalf = container.getBoundingClientRect().width / 4;
     const containerItems = document.querySelectorAll(
-      "#scrollItems > div"
+      "#scrollItems > div",
     ) as NodeListOf<HTMLElement>;
     const containerItemsLines = document.querySelectorAll(
-      "#scrollItemsLines > div"
+      "#scrollItemsLines > div",
     ) as NodeListOf<HTMLElement>;
 
     const selectorsAll = document.querySelectorAll(
-      ".selector"
+      ".selector",
     ) as NodeListOf<HTMLElement>;
     let containerItemsLeft: number[] = [];
 
@@ -143,10 +143,10 @@ const Cozy: React.FC = () => {
         const path = container.getBoundingClientRect().top - offset;
         const end = containerHeight - offset;
         const textBgs = document.querySelectorAll(
-          "#textBg h2"
+          "#textBg h2",
         ) as NodeListOf<HTMLElement>;
         const openingPs = document.querySelectorAll(
-          "#openingP span"
+          "#openingP span",
         ) as NodeListOf<HTMLElement>;
 
         if (path >= 0) {
@@ -166,8 +166,8 @@ const Cozy: React.FC = () => {
               0,
               Math.min(
                 1,
-                (-path - (end * 0.2 * i) / textBgs.length) / (end * 0.5)
-              )
+                (-path - (end * 0.2 * i) / textBgs.length) / (end * 0.5),
+              ),
             );
             openingPs[openingPs.length - 1 - i].style.display =
               ratio > 0.5 ? "inline" : "none";
@@ -180,17 +180,17 @@ const Cozy: React.FC = () => {
               0,
               Math.min(
                 1,
-                (-path - (end * 1 * i) / textBgs.length) / (end * 0.5)
-              )
+                (-path - (end * 1 * i) / textBgs.length) / (end * 0.5),
+              ),
             );
             const adjRatio = easeInOutQuint(ratio);
             if (i > 0 && adjRatio > 0) {
               const textBgItems = textBgItem.querySelectorAll(
-                "span"
+                "span",
               ) as NodeListOf<HTMLElement>;
               const randomIndices = Array.from(
                 { length: textBgItems.length },
-                (_, i) => i
+                (_, i) => i,
               ).sort(() => Math.random() - 0.5);
               textBgItems.forEach((item) => {
                 if (item.dataset.timeoutId) {
@@ -205,11 +205,11 @@ const Cozy: React.FC = () => {
               });
             } else if (i > 0 && adjRatio <= 0) {
               const textBgItems = textBgItem.querySelectorAll(
-                "span"
+                "span",
               ) as NodeListOf<HTMLElement>;
               const randomIndices = Array.from(
                 { length: textBgItems.length },
-                (_, i) => i
+                (_, i) => i,
               ).sort(() => Math.random() - 0.5);
               textBgItems.forEach((item) => {
                 if (item.dataset.timeoutId) {
@@ -229,7 +229,7 @@ const Cozy: React.FC = () => {
           scaleImage.style.height = "0vh";
           textBgs.forEach((item) => {
             const textBgItems = item.querySelectorAll(
-              "span"
+              "span",
             ) as NodeListOf<HTMLElement>;
             textBgItems.forEach((item) => {
               if (item.dataset.timeoutId) {
@@ -247,7 +247,7 @@ const Cozy: React.FC = () => {
       function section2() {
         const scroll = document.querySelector("#scroll-section") as HTMLElement;
         const scrollContainer = document.querySelector(
-          "#scroll-container"
+          "#scroll-container",
         ) as HTMLElement;
         const scrollHeight = scroll.getBoundingClientRect().height;
         const scrollTop = window.scrollY;
@@ -256,7 +256,7 @@ const Cozy: React.FC = () => {
         const scrollProgress =
           Math.max(
             0,
-            Math.min((scrollTop - scrollStart) / (scrollEnd - scrollStart), 1)
+            Math.min((scrollTop - scrollStart) / (scrollEnd - scrollStart), 1),
           ) * scrollItemsLines.getBoundingClientRect().width;
 
         scrollContainer.scrollLeft = scrollProgress - containerHalf;
@@ -264,10 +264,10 @@ const Cozy: React.FC = () => {
         containerItems.forEach((item, i) => {
           const transformElm = item.querySelector(".transform") as HTMLElement;
           const transformLinesElm = containerItemsLines[i].querySelector(
-            ".transform"
+            ".transform",
           ) as HTMLElement;
           const img = transformElm.querySelector(
-            ".transform img"
+            ".transform img",
           ) as HTMLImageElement;
           const start = containerItemsLeft[i] + 300;
           const end = start + 600; //width of item goes here
@@ -292,7 +292,7 @@ const Cozy: React.FC = () => {
           if (scrollProgress > approaching && scrollProgress <= start) {
             var progress = Math.min(
               (scrollProgress - approaching) / (start - approaching),
-              1
+              1,
             );
             var ease = easeInOutQuint(progress);
             if (progress < 0.5) {
@@ -340,7 +340,7 @@ const Cozy: React.FC = () => {
           if (scrollProgress >= end && scrollProgress < leaving) {
             var progress = Math.min(
               (scrollProgress - end) / (leaving - end),
-              1
+              1,
             );
             var ease = easeInOutQuint(progress);
             if (progress < 0.5) {
@@ -395,19 +395,19 @@ const Cozy: React.FC = () => {
         const scrollEnd = scrollStart + outroHeight - window.innerHeight;
         const scrollProgress = Math.max(
           0,
-          Math.min((scrollTop - scrollStart) / (scrollEnd - scrollStart), 1)
+          Math.min((scrollTop - scrollStart) / (scrollEnd - scrollStart), 1),
         );
 
         const topWindow = document.querySelector(".window.top") as HTMLElement;
         const bottomWindow = document.querySelector(
-          ".window.bottom"
+          ".window.bottom",
         ) as HTMLElement;
         const topFilter = document.querySelector(".top .filter") as HTMLElement;
         const bottomFilter = document.querySelector(
-          ".bottom .filter"
+          ".bottom .filter",
         ) as HTMLElement;
         const shades = document.querySelectorAll(
-          ".shade"
+          ".shade",
         ) as NodeListOf<HTMLElement>;
 
         const topHeight = 100 - scrollProgress * 100;
