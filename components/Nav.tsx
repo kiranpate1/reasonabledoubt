@@ -18,8 +18,9 @@ const Nav = () => {
     const navContainer = document.querySelector("nav") as HTMLElement;
     const scrollImages = document.getElementById("scrollImages") as HTMLElement;
     const images = document.querySelectorAll(
-      "#scrollImages > a"
+      "#scrollImages > a",
     ) as NodeListOf<HTMLElement>;
+    const homeLink = document.querySelector(".homeLink") as HTMLElement;
 
     let totalWidth = window.innerWidth;
     let isHovering = false;
@@ -33,16 +34,16 @@ const Nav = () => {
         const image = images[i] as HTMLElement;
         const imageImg = image.querySelector("img") as HTMLElement;
         const activeImg = images[maxWeightIndex].querySelector(
-          "img"
+          "img",
         ) as HTMLElement;
         const activeName = images[maxWeightIndex].querySelector(
-          "#name"
+          "#name",
         ) as HTMLElement;
         const width = widths[i];
         image.style.width = `${width}vw`;
         imageImg.style.filter = `saturate(0.2) brightness(${Math.pow(
           width / maxWidth,
-          0.75
+          0.75,
         )})`;
         activeImg.style.filter = `saturate(1) brightness(1)`;
         (image.querySelector("#name") as HTMLElement).style.opacity = "0";
@@ -70,6 +71,7 @@ const Nav = () => {
       navContainer.style.transitionDelay = "0.1s";
       scrollImages.style.transform = `translateY(0px)`;
       scrollImages.style.transitionDelay = "0.1s";
+      homeLink.style.opacity = "1";
     });
     navContainer.addEventListener("mousemove", (event) => {
       if (!isHovering) return;
@@ -98,6 +100,7 @@ const Nav = () => {
       navContainer.style.transitionDelay = "0s";
       scrollImages.style.transform = `translateY(${targetArea}px)`;
       scrollImages.style.transitionDelay = "0s";
+      homeLink.style.opacity = "0";
     });
 
     function generateNumbers(percentage: number, maxWeight = maxWidth) {
@@ -114,23 +117,23 @@ const Nav = () => {
       // Normalize preliminary weights to get their relative contributions
       const rawWeightSum = rawWeights.reduce((sum, weight) => sum + weight, 0);
       const normalizedWeights = rawWeights.map(
-        (weight) => weight / rawWeightSum
+        (weight) => weight / rawWeightSum,
       );
 
       // Apply the max weight constraint
       const scaledWeights = normalizedWeights.map((weight) =>
-        Math.min(weight * totalSum, maxWeight)
+        Math.min(weight * totalSum, maxWeight),
       );
       const scaledWeightSum = scaledWeights.reduce(
         (sum, weight) => sum + weight,
-        0
+        0,
       );
 
       // Redistribute excess/remaining weight proportionally
       const redistributionFactor =
         (totalSum - scaledWeightSum) / scaledWeightSum;
       const finalWeights = scaledWeights.map(
-        (weight) => weight + weight * redistributionFactor
+        (weight) => weight + weight * redistributionFactor,
       );
 
       const maxWeightIndex = scaledWeights.indexOf(Math.max(...scaledWeights));
@@ -158,11 +161,11 @@ const Nav = () => {
 
   return (
     <nav
-      className="fixed w-screen bottom-0 left-0 pointer-events-auto origin-bottom overflow-hidden z-[100] duration-300 ease-in-out"
+      className="fixed w-screen bottom-0 left-0 pointer-events-auto origin-bottom z-[100] duration-300 ease-in-out"
       style={{ transform: `translateY(${imageHeight - targetArea + 24}px)` }}
     >
       <svg
-        className="absolute top-4 left-4"
+        className="absolute top-6 left-1/2 -translate-x-1/2"
         width="16"
         height="16"
         viewBox="0 0 16 16"
@@ -222,6 +225,12 @@ const Nav = () => {
             />
           </a>
         ))}
+        <a
+          href="/"
+          className="homeLink absolute -top-8 left-1 text-white opacity-0 hover:!opacity-70 pr-20 pt-2"
+        >
+          ← Home
+        </a>
       </div>
     </nav>
   );
