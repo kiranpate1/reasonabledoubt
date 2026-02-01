@@ -65,6 +65,7 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
       if (isHovering) return;
 
       const scrollTrack = document.getElementById("scrollTrack") as HTMLElement;
+      if (!scrollTrack) return;
 
       if (
         window.scrollY > window.innerWidth * 0.2 &&
@@ -80,6 +81,8 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
           const typingSpans = typingRef.current.querySelectorAll(
             "span span",
           ) as NodeListOf<HTMLElement>;
+          const ul = typingRef.current.querySelector("ul") as HTMLElement;
+          ul.classList.add("list-disc");
           typingSpans.forEach((span, index) => {
             const el = span as HTMLElement;
             el.style.transition = `opacity 0s ${index * 0.01}s`;
@@ -97,6 +100,7 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
 
       //section-1
       if (window.scrollY < scrollTrack.offsetTop) {
+        console.log("test");
         const scrollProgress = Math.min(
           window.scrollY / scrollTrack.offsetTop,
           1,
@@ -131,8 +135,8 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
       }
 
       //section-2
-      if (
-        window.scrollY > scrollTrack.offsetTop &&
+      else if (
+        window.scrollY >= scrollTrack.offsetTop &&
         window.scrollY <
           scrollTrack.offsetTop + scrollTrack.scrollHeight - window.innerHeight
       ) {
@@ -160,8 +164,8 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
       }
 
       //section-3
-      if (
-        window.scrollY >
+      else if (
+        window.scrollY >=
         scrollTrack.offsetTop + scrollTrack.scrollHeight - window.innerHeight
       ) {
         const scrollProgress = Math.min(
@@ -180,6 +184,10 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
         for (let i = 0; i < projects.length; i++) {
           const image = images[i] as HTMLElement;
           const imageImg = image.querySelector("img") as HTMLElement;
+          image.style.transitionDelay = `${i * 0.0125}s`;
+          image.style.backgroundColor = "#000";
+          imageImg.style.transitionDelay = `${i * 0.0125}s`;
+          imageImg.style.opacity = "1";
           image.style.transform = `translate3d(0,0,0) scaleX(${
             1 - easeOutQuad(scrollProgress) * 0.99
           })`;
@@ -188,10 +196,15 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
           })`;
         }
         animateImages(1 + scrollProgress);
+        scrollImages.style.transform = `translateY(0)`;
         scrollImages.style.filter = `brightness(${1 + scrollProgress * 10})`;
         scrollImages.style.opacity = `${
           1 - easeOutQuad(easeOutQuad(scrollProgress)) * 0.85
         }`;
+
+        status1.style.transform = `translateY(-${IMAGE_HEIGHT}px)`;
+        status1.style.opacity = "0";
+        status2.style.opacity = "1";
       }
     }
 
@@ -283,13 +296,18 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
     }
 
     //listeners
-    handleScroll();
+    // Initial scroll handling with delay to ensure scroll position is restored
+    const initialScrollTimer = setTimeout(() => {
+      handleScroll();
+    }, 0);
+
     window.addEventListener("scroll", handleImageScroll);
     window.addEventListener("resize", handleImageResize, {
       passive: true,
     });
 
     return () => {
+      clearTimeout(initialScrollTimer);
       window.removeEventListener("scroll", handleImageScroll);
       window.removeEventListener("resize", handleImageResize);
     };
@@ -344,6 +362,7 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
           style={{ height: `${SCROLL_HEIGHT + 100}vh` }}
         >
           <div className="sticky top-0 w-screen min-h-screen flex items-start">
+            <div className="absolute w-screen bottom-px left-0 bg-black h-[199px]"></div>
             <div
               id="scrollImages"
               className="absolute w-screen bottom-0 left-0 flex flex-row gap-[0px] pointer-events-auto origin-bottom overflow-hidden"

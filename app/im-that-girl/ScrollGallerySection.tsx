@@ -227,7 +227,7 @@ export default function ScrollGallerySection({
   return (
     <section id="scroll-section" className="h-[400vh]">
       <div className="sticky top-0 h-0">
-        <div className="py-4 flex flex-col items-center justify-between h-screen">
+        <div className="pt-4 pb-6 flex flex-col items-center justify-between h-screen">
           <div className="selectors flex gap-0 items-start w-max mx-auto mb-4 border-[0.5px] border-[#787878]">
             {outfits.map((outfit, i) => (
               <div
@@ -251,7 +251,7 @@ export default function ScrollGallerySection({
         >
           {outfits.map((outfit, i) => (
             <div key={i} className="relative">
-              <div className="transform">
+              <div className="transform max-h-[80vh]">
                 <div className="line-left"></div>
                 <div className="line-right"></div>
                 <div className="line-top"></div>
@@ -276,11 +276,11 @@ export default function ScrollGallerySection({
           </h1>
           {outfits.map((outfit, i) => (
             <div key={i} className="relative">
-              <div className="transform">
+              <div className="transform flex items-center justify-center">
                 <img
                   src={outfit.image}
                   alt={outfit.brand}
-                  className="h-[80vh] w-auto object-contain"
+                  className="max-h-[calc(80vh-2px)] w-auto object-contain"
                 />
               </div>
             </div>

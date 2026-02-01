@@ -74,7 +74,7 @@ export default function DefinitionSection({
             the revival of art and literature under the influence of classical
             models in the 14th–16th centuries.
           </p>
-          <ul className="list-disc space-y-2 pl-4">
+          <ul className="space-y-2 pl-4">
             <li className="pl-0">
               <p>
                 the culture and style of art and architecture developed during

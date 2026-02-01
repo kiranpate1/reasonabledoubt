@@ -16,7 +16,7 @@ export default function HeroSection() {
         <div className="h-full flex-1">
           <h1>
             <span className="text-[rgba(255,255,255,0)]">Renaissance</span> is
-            an album by recording artist Beyoncé
+            the 7th studio album by recording artist Beyoncé.
           </h1>
         </div>
         <div className="h-full w-[20vw]"></div>
