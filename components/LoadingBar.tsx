@@ -9,8 +9,7 @@ type Props = {
 const LoadingBar = ({ status, message, activeIndex }: Props) => {
   return (
     <div className="w-screen detail text-[12px] flex justify-between">
-      <div className="flex gap-20">
-        <div>{status}</div>
+      <div className="flex justify-between w-[300px]">
         <div className="flex flex-row gap-2 items-center">
           <div
             id="loadingBar"
@@ -29,6 +28,7 @@ const LoadingBar = ({ status, message, activeIndex }: Props) => {
           </div>
           <div id="loadingMessage">{message}</div>
         </div>
+        <div>{status}</div>
       </div>
       <div className="flex gap-4">
         <div className="opacity-60">

@@ -350,7 +350,7 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
           id="status-2"
         >
           <LoadingBar
-            status="Success!!"
+            status="Success."
             message="Found 16 songs."
             activeIndex={activeIndex}
           />
@@ -361,8 +361,8 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
           className="relative w-screen top-[-100vh]"
           style={{ height: `${SCROLL_HEIGHT + 100}vh` }}
         >
+          <div className="absolute w-screen bottom-px left-0 bg-black h-[199px]"></div>
           <div className="sticky top-0 w-screen min-h-screen flex items-start">
-            <div className="absolute w-screen bottom-px left-0 bg-black h-[199px]"></div>
             <div
               id="scrollImages"
               className="absolute w-screen bottom-0 left-0 flex flex-row gap-[0px] pointer-events-auto origin-bottom overflow-hidden"
