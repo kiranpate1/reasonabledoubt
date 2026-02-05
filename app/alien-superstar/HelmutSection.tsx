@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 
 function easeInOut(t: number) {
   t /= 0.5;
@@ -68,10 +69,13 @@ export default function HelmutSection() {
 
   return (
     <section className="helmut">
-      <img
+      <Image
         className="helmut-image"
-        src="https://beyonceonline.org/gallery/albums/photoshoots/2022/Renaissance%20Tourbook/01.jpeg"
+        src="/images/alien-superstar/helmut.png"
         alt=""
+        width={800}
+        height={800}
+        priority
       />
       <div className="unique">UNIQUE</div>
     </section>
