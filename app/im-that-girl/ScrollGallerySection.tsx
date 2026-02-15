@@ -2,16 +2,45 @@
 
 import { useState, useEffect } from "react";
 
-type Outfit = {
-  brand: string;
-  image: string;
-};
-
 type Props = {
-  outfits: Outfit[];
   activeOutfit: number;
   setActiveOutfit: (index: number) => void;
 };
+
+const outfits = [
+  {
+    brand: "Marni",
+    image: "/images/im-that-girl/1.webp",
+  },
+  {
+    brand: "DUNDAS",
+    image: "/images/im-that-girl/2.webp",
+  },
+  {
+    brand: "Mugler",
+    image: "/images/im-that-girl/3.webp",
+  },
+  {
+    brand: "Alexander McQueen",
+    image: "/images/im-that-girl/4.webp",
+  },
+  {
+    brand: "Gareth Pugh",
+    image: "/images/im-that-girl/5.webp",
+  },
+  {
+    brand: "Situationist x Yaspis",
+    image: "/images/im-that-girl/6.webp",
+  },
+  {
+    brand: "BOSS",
+    image: "/images/im-that-girl/7.webp",
+  },
+  {
+    brand: "Loewe",
+    image: "/images/im-that-girl/8.webp",
+  },
+];
 
 function easeInOutQuint(t: number) {
   t /= 0.5;
@@ -21,7 +50,6 @@ function easeInOutQuint(t: number) {
 }
 
 export default function ScrollGallerySection({
-  outfits,
   activeOutfit,
   setActiveOutfit,
 }: Props) {
@@ -40,17 +68,32 @@ export default function ScrollGallerySection({
     const scrollItemsLines = document.querySelector(
       "#scrollItemsLines",
     ) as HTMLElement;
+    let scrollItemsLinesWidth = scrollItemsLines.getBoundingClientRect().width;
 
     let containerItemsLeft: number[] = [];
 
-    for (let i = 0; i < containerItems.length; i++) {
-      const itemLeft = containerItems[i].getBoundingClientRect().left;
-      const itemCenter = itemLeft - containerHalf;
-      containerItemsLeft.push(itemCenter);
+    function calculateItemPositions() {
+      const scrollContainer = document.querySelector(
+        "#scroll-container",
+      ) as HTMLElement;
+      if (scrollContainer) {
+        scrollContainer.scrollLeft = 0;
+      }
+
+      containerItemsLeft = [];
+      for (let i = 0; i < containerItems.length; i++) {
+        const itemLeft = containerItems[i].getBoundingClientRect().left;
+        const itemCenter = itemLeft - containerHalf;
+        containerItemsLeft.push(itemCenter);
+      }
     }
+
+    calculateItemPositions();
 
     function handleResize() {
       containerHalf = container.getBoundingClientRect().width / 4;
+      scrollItemsLinesWidth = scrollItemsLines.getBoundingClientRect().width;
+      calculateItemPositions();
       handleScroll();
     }
 
@@ -85,7 +128,7 @@ export default function ScrollGallerySection({
         Math.max(
           0,
           Math.min((scrollTop - scrollStart) / (scrollEnd - scrollStart), 1),
-        ) * scrollItemsLines.getBoundingClientRect().width;
+        ) * scrollItemsLinesWidth;
 
       scrollContainer.scrollLeft = scrollProgress - containerHalf;
 
@@ -225,7 +268,7 @@ export default function ScrollGallerySection({
   }, [setActiveOutfit]);
 
   return (
-    <section id="scroll-section" className="h-[400vh]">
+    <section id="scroll-section" className="relative h-[400vh]">
       <div className="sticky top-0 h-0">
         <div className="pt-4 pb-6 flex flex-col items-center justify-between h-screen">
           <div className="selectors flex gap-0 items-start w-max mx-auto mb-4 border-[0.5px] border-[#787878]">
@@ -264,12 +307,12 @@ export default function ScrollGallerySection({
           id="scrollItems"
           className="scroll-items absolute h-full flex items-center py-0 px-[100vw]"
         >
-          <h1 className="absolute z-10 top-0 left-0 w-screen h-screen text-right text-white">
+          <h1 className="absolute z-10 top-6 left-[250px] w-screen h text-right text-white">
             It's not the
             <br />
-            diamonds,
+            diamonds...
           </h1>
-          <h1 className="absolute z-10 top-0 right-0 w-screen h-screen text-left text-white">
+          <h1 className="absolute z-10 bottom-6 right-0 w-[calc(100vw-300px)] text-left text-white">
             It's not the
             <br />
             pearls.
