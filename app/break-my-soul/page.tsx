@@ -14,8 +14,8 @@ const BreakMySoul: React.FC = () => {
     <main>
       <Nav />
       <IntroSection />
-      <PaletteSwipeSection />
       <NumberOneSection />
+      <PaletteSwipeSection />
       <Footer />
     </main>
   );
