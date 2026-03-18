@@ -6,12 +6,8 @@ import TitleHeader from "../components/TitleHeader";
 import ScrollGallery from "../components/ScrollGallery";
 import Footer from "../components/Footer";
 import Cd from "@/components/Cd";
-import OutroSection from "@/components/OutroSection";
 
 export default function Home() {
-  const typingRef = useRef<HTMLDivElement>(null);
-  const pronunciationRef = useRef<HTMLDivElement>(null);
-
   return (
     <main className="relative w-screen flex flex-col row-start-2 items-center sm:items-start text-white">
       <HeroSection />
@@ -20,7 +16,6 @@ export default function Home() {
       </div>
       <TitleHeader />
       <ScrollGallery />
-      {/* <OutroSection /> */}
       <Footer />
       <div className="absolute left-0 bottom-0 w-full h-screen pointer-events-none -z-[1]">
         <div className="absolute top-1/2 left-0 w-full h-px -translate-y-[300px] bg-white/20"></div>

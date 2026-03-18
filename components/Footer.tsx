@@ -41,7 +41,7 @@ const Footer = (props: Props) => {
         <h1></h1>
         <h1>JAY-Z</h1>
       </div>
-      <div className="absolute bottom-0 left-0 w-full detail text-[12px] flex flex-row items-start gap-20 z-10 pointer-events-none">
+      <div className="absolute bottom-0 left-0 w-full detail text-[12px] flex flex-row items-end lg:items-start gap-20 z-10 pointer-events-none">
         <div className="max-w-[550px] text-balance">
           <div>All rights go to Jaÿ-Z and Roc Nation Ltd. © 2026</div>
           <br />
