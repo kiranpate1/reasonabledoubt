@@ -1,14 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { projects } from "../app/projects";
 
 const MAX_WIDTH = 20;
 const SCROLL_HEIGHT = 400;
 const IMAGE_HEIGHT = 200;
 
-export default function ScrollGallery({}: {}) {
+export default function ScrollGallery() {
   useEffect(() => {
     const scrollImages = document.getElementById("scrollImages") as HTMLElement;
     const images = document.querySelectorAll(
@@ -21,7 +21,7 @@ export default function ScrollGallery({}: {}) {
       ".arrow",
     ) as NodeListOf<HTMLElement>;
     let totalWidth = window.innerWidth;
-    let isHovering = false;
+    const isHovering = false;
 
     //animate
     function handleImageResize() {

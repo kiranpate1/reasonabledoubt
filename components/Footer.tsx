@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 
-type Props = {};
-
-const Footer = (props: Props) => {
+const Footer = () => {
   useEffect(() => {
     const footerLinks = document.getElementById(
       "footerLinks",

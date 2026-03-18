@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect } from "react";
 import { projects } from "../app/projects";
 
@@ -22,7 +23,7 @@ const Nav = () => {
     ) as NodeListOf<HTMLElement>;
     const homeLink = document.querySelector(".homeLink") as HTMLElement;
 
-    let totalWidth = window.innerWidth;
+    const totalWidth = window.innerWidth;
     let isHovering = false;
 
     function animateImages(input: number) {
@@ -197,7 +198,7 @@ const Nav = () => {
         style={{ transform: `translateY(${targetArea}px)` }}
       >
         {projects.map((track, i) => (
-          <a
+          <Link
             key={i}
             className="relative overflow-hidden origin-left cursor-pointer"
             style={{
@@ -223,14 +224,14 @@ const Nav = () => {
                 transform: "translate3d(0,0,0)",
               }}
             />
-          </a>
+          </Link>
         ))}
-        <a
+        <Link
           href="/"
           className="homeLink absolute -top-8 left-1 text-white opacity-0 hover:!opacity-70 pr-20 pt-2"
         >
           ← Home
-        </a>
+        </Link>
       </div>
     </nav>
   );

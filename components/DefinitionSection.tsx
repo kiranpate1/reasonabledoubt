@@ -85,7 +85,7 @@ export default function DefinitionSection({
             <li className="pl-0">
               <p>a revival of or renewed interest in something.</p>
               <p>noun: renaissance; plural noun: renaissances</p>
-              <p>"Welcome to the Renaissance"</p>
+              <p>&quot;Welcome to the Renaissance&quot;</p>
             </li>
           </ul>
         </div>

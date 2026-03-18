@@ -308,12 +308,12 @@ export default function ScrollGallerySection({
           className="scroll-items absolute h-full flex items-center py-0 px-[100vw]"
         >
           <h1 className="absolute z-10 top-6 left-[250px] w-screen h text-right text-white">
-            It's not the
+            It&apos;s not the
             <br />
             diamonds...
           </h1>
           <h1 className="absolute z-10 bottom-6 right-0 w-[calc(100vw-300px)] text-left text-white">
-            It's not the
+            It&apos;s not the
             <br />
             pearls.
           </h1>

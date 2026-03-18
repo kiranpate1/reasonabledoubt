@@ -32,7 +32,7 @@ const LoadingBar = ({ status, message, activeIndex }: Props) => {
       </div>
       <div className="flex gap-4">
         <div className="opacity-60">
-          {status == "Error 404" ? "Renaissance" : projects[activeIndex]?.id}
+          {status == "Error 404" ? "Renaissance" : projects[activeIndex]?.name}
         </div>
         <div>
           {new Date().toLocaleDateString("en-US", {
