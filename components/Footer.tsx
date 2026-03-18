@@ -6,10 +6,10 @@ type Props = {};
 const Footer = (props: Props) => {
   useEffect(() => {
     const footerLinks = document.getElementById(
-      "footerLinks"
+      "footerLinks",
     ) as HTMLElement | null;
     const brighten = document.querySelectorAll(
-      ".brighten"
+      ".brighten",
     ) as NodeListOf<HTMLElement>;
 
     if (footerLinks) {
@@ -37,18 +37,15 @@ const Footer = (props: Props) => {
 
   return (
     <section className="relative w-full h-screen text-white">
-      {/* <h1>Renaissance</h1> */}
-      <div className="absolute top-0 left-0 w-screen h-screen overflow-hidden">
-        <Cd size={500} />
+      <div className="w-full flex items-start justify-between">
+        <h1></h1>
+        <h1>JAY-Z</h1>
       </div>
       <div className="absolute bottom-0 left-0 w-full detail text-[12px] flex flex-row items-start gap-20 z-10 pointer-events-none">
         <div className="max-w-[550px] text-balance">
-          <div>
-            All rights go to Beyoncé and Parkwood Entertainment Ltd. © 2022
-          </div>
+          <div>All rights go to Jaÿ-Z and Roc Nation Ltd. © 2026</div>
           <br />
-          Not affiliated with or endorsed by Beyoncé or Parkwood Entertainment
-          Ltd.
+          Not affiliated with or endorsed by Jaÿ-Z or Roc Nation Ltd.
           <br />
           All images and music used are the property of their respective owners.
           <br />
@@ -60,28 +57,28 @@ const Footer = (props: Props) => {
         >
           <a
             className="pointer-events-auto"
-            href="https://www.instagram.com/beyonce/"
+            href="https://www.instagram.com/jayz/"
             target="_blank"
           >
             Instagram
           </a>
           <a
             className="pointer-events-auto"
-            href="https://twitter.com/beyonce"
+            href="https://twitter.com/jayz"
             target="_blank"
           >
             Twitter
           </a>
           <a
             className="pointer-events-auto"
-            href="https://www.facebook.com/beyonce"
+            href="https://www.facebook.com/jayz"
             target="_blank"
           >
             Facebook
           </a>
           <a
             className="pointer-events-auto"
-            href="https://www.youtube.com/user/beyonce"
+            href="https://www.youtube.com/user/jayz"
             target="_blank"
           >
             YouTube
@@ -95,49 +92,49 @@ const Footer = (props: Props) => {
           </a>
           <a
             className="pointer-events-auto"
-            href="https://music.apple.com/us/artist/beyonc%C3%A9/1419227"
+            href="https://music.apple.com/ca/artist/ja%C3%BF-z/1352449404"
             target="_blank"
           >
             Apple Music
           </a>
           <a
             className="pointer-events-auto"
-            href="https://tidal.com/browse/artist/4443"
+            href="https://tidal.com/browse/artist/7804"
             target="_blank"
           >
             Tidal
           </a>
           <a
             className="pointer-events-auto"
-            href="https://www.amazon.com/Beyonce/e/B00197R8L8"
+            href="https://www.amazon.com/Jay-Z/e/B00197R8L8"
             target="_blank"
           >
             Amazon
           </a>
           <a
             className="pointer-events-auto"
-            href="https://www.beyonce.com/"
+            href="https://www.jayz.com/"
             target="_blank"
           >
             Website
           </a>
           <a
             className="pointer-events-auto"
-            href="https://www.beyonce.com/shop/"
+            href="https://www.jayz.com/shop/"
             target="_blank"
           >
             Shop
           </a>
           <a
             className="pointer-events-auto"
-            href="https://www.beyonce.com/foundation/"
+            href="https://www.jayz.com/foundation/"
             target="_blank"
           >
             Foundation
           </a>
           <a
             className="pointer-events-auto"
-            href="https://www.beyonce.com/ivy-park/"
+            href="https://www.jayz.com/ivy-park/"
             target="_blank"
           >
             Ivy Park

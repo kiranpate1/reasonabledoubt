@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,28 +28,32 @@ p {
   src: url("./fonts/Manrope-VariableFont_wght.ttf") format("truetype");
 }
 
-h1,
-h2,
-.detail,
-a {
-  font-family: "Roboto Mono", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+@font-face {
+  font-family: "Bunth Serif";
+  src: url("./fonts/BunthSerif.ttf") format("truetype");
 }
 
 h1 {
-  font-size: 7vw;
-  letter-spacing: 0em;
-  line-height: 6.8vw;
+  font-family: "Bunth Serif", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 5vw;
+  letter-spacing: -0.7vw;
+  line-height: 5vw;
 }
 
 h2 {
-  font-size: 2vw;
+  font-family: "Host Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 180px;
   letter-spacing: 0em;
-  line-height: 1.9vw;
+  line-height: 180px;
 }
 
+.detail,
+a,
 p,
 .unique {
   font-family: "Manrope", serif;

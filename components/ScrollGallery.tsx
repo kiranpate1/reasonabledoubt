@@ -9,12 +9,7 @@ const MAX_WIDTH = 20;
 const SCROLL_HEIGHT = 400;
 const IMAGE_HEIGHT = 200;
 
-type Props = {
-  typingRef: React.RefObject<HTMLDivElement | null>;
-  pronunciationRef: React.RefObject<HTMLDivElement | null>;
-};
-
-export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
+export default function ScrollGallery({}: {}) {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   useEffect(() => {
@@ -31,11 +26,6 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
     ) as NodeListOf<HTMLElement>;
     const arrows = document.querySelectorAll(
       ".arrow",
-    ) as NodeListOf<HTMLElement>;
-    const status1 = document.getElementById("status-1") as HTMLElement;
-    const status2 = document.getElementById("status-2") as HTMLElement;
-    const loadingBars = document.querySelectorAll(
-      "#status-1 #loadingBar > div",
     ) as NodeListOf<HTMLElement>;
     let totalWidth = window.innerWidth;
     let isHovering = false;
@@ -67,40 +57,8 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
       const scrollTrack = document.getElementById("scrollTrack") as HTMLElement;
       if (!scrollTrack) return;
 
-      if (
-        window.scrollY > window.innerWidth * 0.2 &&
-        window.scrollY <= window.innerHeight * 2
-      ) {
-        for (let i = 0; i < syllables.length; i++) {
-          syllables[i].style.width = syllableWidth;
-        }
-        //type text out
-
-        if (typingRef.current && pronunciationRef.current) {
-          pronunciationRef.current.style.opacity = "1";
-          const typingSpans = typingRef.current.querySelectorAll(
-            "span span",
-          ) as NodeListOf<HTMLElement>;
-          const ul = typingRef.current.querySelector("ul") as HTMLElement;
-          ul.classList.add("list-disc");
-          typingSpans.forEach((span, index) => {
-            const el = span as HTMLElement;
-            el.style.transition = `opacity 0s ${index * 0.01}s`;
-            el.style.opacity = "1";
-          });
-        }
-      } else if (
-        window.scrollY <= window.innerWidth * 0.2 ||
-        window.scrollY > window.innerHeight * 2
-      ) {
-        for (let i = 0; i < syllables.length; i++) {
-          syllables[i].style.width = "0vw";
-        }
-      }
-
       //section-1
       if (window.scrollY < scrollTrack.offsetTop) {
-        console.log("test");
         const scrollProgress = Math.min(
           window.scrollY / scrollTrack.offsetTop,
           1,
@@ -111,27 +69,14 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
           image.style.transitionDelay = `${
             (projects.length - i + 1) * 0.0125
           }s`;
-          image.style.backgroundColor = projects[i].color;
           imageImg.style.transitionDelay = `${
             (projects.length - i + 1) * 0.0125
           }s`;
-          imageImg.style.opacity = "0";
         }
         animateImages(-3 + 3 * easeOutQuad(scrollProgress));
         scrollImages.style.transform = `translateY(${
           IMAGE_HEIGHT - easeInQuad(scrollProgress) * IMAGE_HEIGHT
         }px)`;
-
-        status1.style.transform = `translateY(${
-          0 - IMAGE_HEIGHT * easeInQuad(scrollProgress)
-        }px)`;
-        status1.style.opacity = "1";
-        status2.style.opacity = "0";
-
-        loadingBars.forEach((loadingBar, index) => {
-          loadingBar.style.opacity =
-            index < Math.round(loadingBars.length * scrollProgress) ? "1" : "0";
-        });
       }
 
       //section-2
@@ -157,10 +102,6 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
         scrollImages.style.transform = `translateY(0)`;
         scrollImages.style.filter = `brightness(1)`;
         scrollImages.style.opacity = "1";
-
-        status1.style.transform = `translateY(-${IMAGE_HEIGHT}px)`;
-        status1.style.opacity = "0";
-        status2.style.opacity = "1";
       }
 
       //section-3
@@ -188,12 +129,6 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
           image.style.backgroundColor = "#000";
           imageImg.style.transitionDelay = `${i * 0.0125}s`;
           imageImg.style.opacity = "1";
-          image.style.transform = `translate3d(0,0,0) scaleX(${
-            1 - easeOutQuad(scrollProgress) * 0.99
-          })`;
-          imageImg.style.transform = `translate3d(0,0,0) scaleX(${
-            1 + easeOutQuad(scrollProgress)
-          })`;
         }
         animateImages(1 + scrollProgress);
         scrollImages.style.transform = `translateY(0)`;
@@ -201,10 +136,6 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
         scrollImages.style.opacity = `${
           1 - easeOutQuad(easeOutQuad(scrollProgress)) * 0.85
         }`;
-
-        status1.style.transform = `translateY(-${IMAGE_HEIGHT}px)`;
-        status1.style.opacity = "0";
-        status2.style.opacity = "1";
       }
     }
 
@@ -224,6 +155,9 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
         const scrollLine = lines[i] as HTMLElement;
         const width = widths[i];
         image.style.width = `${width}vw`;
+        image.style.height = `${width * 10}px`;
+        image.style.zIndex = `${Math.round(width)}`;
+        // imageImg.style.transform = `scale(${1 + width / 100}) translate3d(0,0,0)`;
         imageImg.style.filter = `saturate(0.2) brightness(${Math.pow(
           width / MAX_WIDTH,
           0.75,
@@ -319,59 +253,22 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
       className="relative w-screen z-1 pointer-events-none"
       style={{ height: `${SCROLL_HEIGHT}vh` }}
     >
-      <div className="relative pointer-events-none flex h-0 w-screen items-start z-[12]">
-        <div className="relative w-screen h-[200vh] top-[-100vh]">
-          <div className="sticky top-0 w-screen min-h-screen flex items-start">
-            <div
-              className="absolute bottom-0 left-0 pointer-events-auto bg-black"
-              id="status-1"
-            >
-              <LoadingBar
-                status="Error 404"
-                message="Retrieving songs..."
-                activeIndex={activeIndex}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="absolute pointer-events-none w-screen left-0 z-[11]"
-        style={{
-          top: `calc(100vh - ${IMAGE_HEIGHT}px - 18px)`,
-          height: `calc(${SCROLL_HEIGHT - 100}vh + ${IMAGE_HEIGHT}px + 18px)`,
-        }}
-      >
-        <div
-          className="sticky top-0 left-0 bg-black pointer-events-auto"
-          style={{
-            borderBottom: "1px solid rgba(255,255,255,0.15)",
-          }}
-          id="status-2"
-        >
-          <LoadingBar
-            status="Success."
-            message="Found 16 songs."
-            activeIndex={activeIndex}
-          />
-        </div>
-      </div>
       <div className="relative z-10 pointer-events-none flex h-0 w-screen items-start">
         <div
           className="relative w-screen top-[-100vh]"
           style={{ height: `${SCROLL_HEIGHT + 100}vh` }}
         >
-          <div className="absolute w-screen bottom-px left-0 bg-black h-[199px]"></div>
-          <div className="sticky top-0 w-screen min-h-screen flex items-start">
+          <div className="absolute w-screen bottom-px left-0 h-[199px]"></div>
+          <div className="sticky top-0 w-screen min-h-screen flex items-start overflow-hidden">
             <div
               id="scrollImages"
-              className="absolute w-screen bottom-0 left-0 flex flex-row gap-[0px] pointer-events-auto origin-bottom overflow-hidden"
+              className="absolute w-screen bottom-0 left-0 flex flex-row items-end gap-[0px] pointer-events-auto origin-bottom"
               style={{ transform: `translateY(${IMAGE_HEIGHT}px)` }}
             >
               {projects.map((track, i) => (
                 <div
                   key={i}
-                  className="relative overflow-hidden origin-left"
+                  className="relative origin-left"
                   style={{
                     height: `${IMAGE_HEIGHT}px`,
                     transform: "translate3d(0,0,0)",
@@ -379,7 +276,7 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
                   }}
                 >
                   <Image
-                    className="w-full object-cover h-full origin-top"
+                    className="relative w-full object-cover h-full origin-[50%_100%]"
                     src={track.src}
                     width={IMAGE_HEIGHT}
                     height={IMAGE_HEIGHT}
@@ -389,6 +286,7 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
                       transform: "translate3d(0,0,0)",
                     }}
                   />
+                  <div className="absolute top-0 -left-[100vw] w-[200vw] h-px bg-white/15"></div>
                 </div>
               ))}
             </div>
@@ -397,50 +295,81 @@ export default function ScrollGallery({ typingRef, pronunciationRef }: Props) {
       </div>
       <div
         id="scrollLines"
-        className="absolute w-screen h-full left-0 flex flex-row gap-[0px] bg-black pointer-events-auto"
+        className="absolute w-screen h-full left-0 flex flex-row gap-[0px] bg-black pointer-events-auto overflow-hidden border-t border-t-white/15"
         style={{
-          bottom: `${IMAGE_HEIGHT}px`,
-          height: `${SCROLL_HEIGHT - 100}vh`,
+          bottom: `0px`,
+          height: `calc(${SCROLL_HEIGHT - 100}vh + ${IMAGE_HEIGHT}px)`,
         }}
       >
         {projects.map((track, index) => (
           <div
             key={index}
-            className="relative h-full grid"
+            className="relative h-full"
             style={{
               borderLeft: "0.5px solid rgba(255,255,255,0.15)",
               borderRight: "0.5px solid rgba(255,255,255,0.15)",
-              gridTemplateRows: `repeat(${projects.length}, 1fr)`,
             }}
           >
-            <a
-              className="whitespace-nowrap self-center"
-              key={index}
-              href={`/${track.name
-                .toLowerCase()
-                .replace(/ /g, "-")
-                .replace(/'/g, "")}`}
-              style={{ gridArea: `${index + 1} / 1 / span 1 / span 1` }}
+            <div
+              className="relative w-full h-[calc(100%-220px)] grid"
+              style={{
+                gridTemplateRows: `repeat(${projects.length}, 1fr)`,
+              }}
             >
-              {index + 1}.{track.name} <br />{" "}
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="arrow opacity-0 duration-200 -rotate-90"
+              <a
+                className="whitespace-nowrap self-center"
+                key={index}
+                href={`/${track.name
+                  .toLowerCase()
+                  .replace(/ /g, "-")
+                  .replace(/'/g, "")}`}
+                style={{ gridArea: `${index + 1} / 1 / span 1 / span 1` }}
               >
-                <path
-                  d="M2 8H14M14 8L9.5 3.5M14 8L9.5 12.5"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </a>
+                {track.name} <br />{" "}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="arrow opacity-0 duration-200 -rotate-90"
+                >
+                  <path
+                    d="M2 8H14M14 8L9.5 3.5M14 8L9.5 12.5"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </a>
+            </div>
           </div>
         ))}
+      </div>
+      <div
+        className="absolute z-100 w-screen h-full left-0"
+        style={{
+          bottom: `0px`,
+          height: `calc(${SCROLL_HEIGHT - 100}vh + ${IMAGE_HEIGHT}px + 180px)`,
+        }}
+      >
+        <div className="sticky top-0 left-0 z-0 flex justify-stretch gap-0">
+          <h1
+            style={{
+              textShadow:
+                "1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff",
+              color: "black",
+            }}
+          >
+            REASONABLE
+            <br />
+            DOUBT
+          </h1>
+        </div>
+        <div className="absolute z-1 top-0 left-0 w-full h-[180px] bg-black border-t border-b border-white flex justify-between">
+          <h2>Est.</h2>
+          <h2>1996</h2>
+        </div>
       </div>
       <div className="absolute bottom-0 left-0 h-[1px] w-screen bg-[rgba(255,255,255,0.15)]"></div>
     </section>
