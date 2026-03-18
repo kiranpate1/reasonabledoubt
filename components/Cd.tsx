@@ -59,30 +59,6 @@ const Cd = ({ size }: props) => {
       ((latest - windowSize.height / 2) / (windowSize.height / 2)) * 1,
   );
 
-  const opacity1 = useTransform(
-    motionValue(cursorPosition.x),
-    (latest: number) => {
-      const x = latest;
-      const y = cursorPosition.y;
-
-      const value = (y / windowSize.height - x / windowSize.width + 1) / 2;
-
-      return value;
-    },
-  );
-
-  const opacity2 = useTransform(
-    motionValue(cursorPosition.x),
-    (latest: number) => {
-      const x = latest;
-      const y = cursorPosition.y;
-
-      const value = (x / windowSize.width - y / windowSize.height + 1) / 2;
-
-      return value;
-    },
-  );
-
   return (
     <div className="relative flex justify-center items-center w-full h-full">
       <div

@@ -22,7 +22,7 @@ export default function DefinitionSection({
         p.style.flexWrap = "wrap";
         p.innerText = "";
         const words = fullText.split(" ");
-        words.forEach((word, index) => {
+        words.forEach((word) => {
           const span = document.createElement("span");
           const letters = word.split("");
           letters.forEach((letter, letterIndex) => {
