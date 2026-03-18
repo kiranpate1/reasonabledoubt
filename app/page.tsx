@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import HeroSection from "../components/HeroSection";
 import TitleHeader from "../components/TitleHeader";
 import ScrollGallery from "../components/ScrollGallery";

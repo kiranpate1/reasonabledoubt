@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import LoadingBar from "./LoadingBar";
 import { projects } from "../app/projects";
 
 const MAX_WIDTH = 20;
@@ -10,13 +9,7 @@ const SCROLL_HEIGHT = 400;
 const IMAGE_HEIGHT = 200;
 
 export default function ScrollGallery({}: {}) {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-
   useEffect(() => {
-    const syllables = document.querySelectorAll(
-      ".syllable",
-    ) as NodeListOf<HTMLElement>;
-    const syllableWidth = "4vw";
     const scrollImages = document.getElementById("scrollImages") as HTMLElement;
     const images = document.querySelectorAll(
       "#scrollImages > div",
@@ -145,7 +138,6 @@ export default function ScrollGallery({}: {}) {
       const maxWeightIndex = generateNumbers(input).maxWeightIndex;
 
       for (let i = 0; i < projects.length; i++) {
-        setActiveIndex(maxWeightIndex);
         const image = images[i] as HTMLElement;
         const imageImg = image.querySelector("img") as HTMLElement;
         const activeImg = images[maxWeightIndex].querySelector(

@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const lettersRef = useRef<SVGSVGElement | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {

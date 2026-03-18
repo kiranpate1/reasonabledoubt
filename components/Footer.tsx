@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import Cd from "../components/Cd";
 
 type Props = {};
 
